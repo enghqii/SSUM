@@ -1,0 +1,18 @@
+일단 모든 json 에는 tag 값이 있어야 함. 태그값을 통해서 어떤 명령인지 서버가 판별함.
+
+1.1 로그인 request
+
+{
+	"tag" : "LOGIN",
+	"id" : "enghqii",
+	"password" : "password"
+}
+
+1.2 로그인 response
+
+{
+	"tag" : "LOGIN"
+	"success" : <fail - 0, success - 1>,
+	"error_msg" : ""
+}
+
