@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="http_request">
+      <UniqueIdentifier>{c5ca1b7b-31a1-44dc-b555-564efd625ebd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -33,6 +36,15 @@
     </None>
     <None Include="res\Toolbar256.bmp">
       <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="..\http-request\lib\http_request_header.inl">
+      <Filter>http_request</Filter>
+    </None>
+    <None Include="..\http-request\lib\http_request_inner.inl">
+      <Filter>http_request</Filter>
+    </None>
+    <None Include="..\http-request\lib\http_response_info.inl">
+      <Filter>http_request</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +80,12 @@
     </ClInclude>
     <ClInclude Include="CRDlg.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\http-request\lib\http_request.h">
+      <Filter>http_request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\http-request\lib\http_request_manager.h">
+      <Filter>http_request</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

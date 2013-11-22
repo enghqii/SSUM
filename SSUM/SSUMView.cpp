@@ -16,6 +16,7 @@
 #include "TestDlg.h"
 #include "CRDlg.h"
 #include "MainFrm.h"
+#include "../http-request/lib/http_request_manager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -121,12 +122,40 @@ void CSSUMView::OnBnClickedButton2()
 	}
 }
 
+class CMyManager : public FCHttpRequestManager {
+
+	virtual void OnAfterRequestSend (FCHttpRequest& rTask)
+    {
+		Beep(300,10);
+    }
+
+    virtual void OnAfterRequestFinish (FCHttpRequest& rTask)
+    {
+		Beep(900,10);
+    }
+};
+
+CMyManager httpMgr;
 
 void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	
+	// http request를 날려야함.
+
+	UpdateData(true);
+
+	CString id = m_ID;
+	CString password = m_PW;
+
+	UpdateData(false); 
+
+	HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
+	h.m_url = _T("http://125.209.197.196/index.php") ;
+	h.AddMultipartFormData ("tag", "LOGIN") ;
+	h.AddMultipartFormData ("id", "") ;
+	h.AddMultipartFormData ("password", "1234") ;
+	httpMgr.AddRequest(h);
+
 	//우선 무조건 넘어가도록 함
-	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
-	pMain->Set_View(IDD_CRDLG);
+	//CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
+	//pMain->Set_View(IDD_CRDLG);
 }

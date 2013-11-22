@@ -5,4 +5,4 @@
 
 #include "stdafx.h"
 
-
+#include "../http-request/lib/http_request_manager.h"
