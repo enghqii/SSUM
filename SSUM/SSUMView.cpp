@@ -141,6 +141,7 @@ void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
 {
 	// http request를 날려야함.
 
+	/*
 	UpdateData(true);
 
 	CString id = m_ID;
@@ -154,8 +155,9 @@ void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
 	h.AddMultipartFormData ("id", "") ;
 	h.AddMultipartFormData ("password", "1234") ;
 	httpMgr.AddRequest(h);
+	*/
 
 	//우선 무조건 넘어가도록 함
-	//CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
-	//pMain->Set_View(IDD_CRDLG);
+	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
+	pMain->Set_View(IDD_CRDLG);
 }
