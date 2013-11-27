@@ -107,52 +107,66 @@ CSSUMDoc* CSSUMView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 #endif //_DEBUG
 
 
-// CSSUMView 메시지 처리기
-
-
-void CSSUMView::OnBnClickedButton2()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CJoinDlg join;
-	if(join.DoModal() == ID_OK)
-	{
-		UpdateData(TRUE);
-		
-		UpdateData(FALSE);
-	}
-}
-
 class CMyManager : public FCHttpRequestManager {
 
 	virtual void OnAfterRequestSend (FCHttpRequest& rTask)
     {
-		Beep(300,10);
     }
 
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask)
     {
-		Beep(900,10);
+		Sleep(10);
     }
 };
 
 CMyManager httpMgr;
 
-void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
+// CSSUMView 메시지 처리기
+
+// JOIN button handler
+void CSSUMView::OnBnClickedButton2()
+{
+	CJoinDlg join;
+	INT_PTR ptr = join.DoModal();
+	if(ptr == IDOK)
+	{
+		UpdateData(TRUE);
+		// TODO : 여기서 id랑 패스워드(검사), 이름 을 http request로 보내면 됨.
+
+		CStringA id(join.m_ID);
+		CStringA pw(join.m_PW);
+		CStringA name(join.m_Name);
+
+		HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
+		h.m_url = _T("http://125.209.197.196/index.php") ;
+		h.AddMultipartFormData("tag", "REGISTER") ;
+		h.AddMultipartFormData("id", id) ;
+		h.AddMultipartFormData("password", pw);
+		h.AddMultipartFormData("name", name);
+		h.EndMultipartFormData();
+		httpMgr.AddRequest(h);
+
+		UpdateData(FALSE);
+	}
+}
+
+//Login button handler
+void CSSUMView::OnBnClickedButton1()
 {
 	// http request를 날려야함.
 
 	UpdateData(true);
 
-	CString id = m_ID;
-	CString password = m_PW;
+	CStringA id(m_ID);
+	CStringA password(m_PW);
 
 	UpdateData(false); 
 
 	HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = _T("http://125.209.197.196/index.php") ;
 	h.AddMultipartFormData("tag", "LOGIN") ;
-	h.AddMultipartFormData("id", "enghqii") ;
-	h.AddMultipartFormData("password", "1234");
+	h.AddMultipartFormData("id", id) ;
+	h.AddMultipartFormData("password", password);
 	h.EndMultipartFormData();
 	httpMgr.AddRequest(h);
 

@@ -16,3 +16,18 @@
 	"error_msg" : ""
 }
 
+
+2.1 회원가입 request
+{
+	"tag" : "REGISTER",
+	"id" : <ID>,
+	"password" : <PASSWORD>,
+	"name" : <name>
+}
+
+2.2 회원가입 response
+{
+	"tag" : "REGISTER",
+	"success" : <>,
+	"error_msg" : <>
+}
