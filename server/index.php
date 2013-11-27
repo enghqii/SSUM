@@ -1,12 +1,18 @@
-<!-- 
->> SSUM php server
->> author : enghqii@gmail.com
->> 13-11-22
--->
-
 <?php
 	// 클라이언트는 http request 를 통해 서버에게 정보를 준다.
-	
+	require 'dbconfig.php';
+
+	//echo "begin";
+
+	// mysql connection
+	$conn = mysqli_connect($mysql_host,$mysql_user,$mysql_password);
+	if(mysqli_connect_errno($conn)){
+		echo "DB connection fail " . mysqli_connect_error();
+		exit;
+	}else{
+		//echo "DB conncted";
+	}
+
 	// post 에 tag값이 있는지 없는지
 	if( isset($_POST['tag']) && $_POST['tag'] != ''){
 
