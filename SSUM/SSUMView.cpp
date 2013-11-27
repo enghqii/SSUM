@@ -150,9 +150,10 @@ void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
 
 	HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = _T("http://125.209.197.196/index.php") ;
-	h.AddMultipartFormData ("tag", "LOGIN") ;
-	h.AddMultipartFormData ("id", "") ;
-	h.AddMultipartFormData ("password", "1234") ;
+	h.AddMultipartFormData("tag", "LOGIN") ;
+	h.AddMultipartFormData("id", "enghqii") ;
+	h.AddMultipartFormData("password", "1234");
+	h.EndMultipartFormData();
 	httpMgr.AddRequest(h);
 
 	//우선 무조건 넘어가도록 함
