@@ -41,6 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -51,10 +53,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -94,6 +99,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\http-request\lib\http_request_header.inl" />
+    <None Include="..\http-request\lib\http_request_inner.inl" />
+    <None Include="..\http-request\lib\http_response_info.inl" />
     <None Include="ReadMe.txt" />
     <None Include="res\SSUM.ico" />
     <None Include="res\SSUM.rc2" />
@@ -103,6 +111,15 @@
     <None Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\http-request\lib\http_request.h" />
+    <ClInclude Include="..\http-request\lib\http_request_manager.h" />
+    <ClInclude Include="..\rapidjson\document.h" />
+    <ClInclude Include="..\rapidjson\filestream.h" />
+    <ClInclude Include="..\rapidjson\prettywriter.h" />
+    <ClInclude Include="..\rapidjson\rapidjson.h" />
+    <ClInclude Include="..\rapidjson\reader.h" />
+    <ClInclude Include="..\rapidjson\stringbuffer.h" />
+    <ClInclude Include="..\rapidjson\writer.h" />
     <ClInclude Include="CRDlg.h" />
     <ClInclude Include="JoinDlg.h" />
     <ClInclude Include="MainFrm.h" />

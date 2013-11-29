@@ -16,12 +16,14 @@
 #include "TestDlg.h"
 #include "CRDlg.h"
 #include "MainFrm.h"
-#include "../http-request/lib/http_request_manager.h"
+
+#include "../rapidjson/document.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+using namespace rapidjson;
 
 // CSSUMView
 
@@ -106,58 +108,113 @@ CSSUMDoc* CSSUMView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 }
 #endif //_DEBUG
 
+// HTTP REQUEST RESPONSE FUNCTIONS -- begin
+void CSSUMView::OnAfterRequestSend (FCHttpRequest& rTask)
+{
+}
+
+void CSSUMView::OnAfterRequestFinish (FCHttpRequest& rTask)
+{
+	// pop received data
+	std::string   receive_data ;
+	rTask.PopReceived (receive_data) ;
+
+	// json parse
+	rapidjson::Document doc;
+	doc.Parse<0>(receive_data.c_str());
+
+	if(doc.HasParseError() == false){
+
+		// parse successful
+		// getting 'tag' value
+		std::string tag = doc["tag"].GetString();
+
+		// and dispatch here
+		if(tag.compare("LOGIN") == 0){
+
+			int success = doc["success"].GetInt();
+
+			if(success == 1){
+
+				AfxMessageBox(L"login SUCCESSFUL");
+				this->onLoginSuccess();
+
+			}else{
+				AfxMessageBox(L"login FAILED");
+			}
+
+		}else if(tag.compare("REGISTER") == 0){
+			
+			int success = doc["success"].GetInt();
+
+			if(success == 1){
+				// TODO : register success
+				AfxMessageBox(L"register SUCCESSFUL.");
+			}else{
+				// TODO : register failed
+				AfxMessageBox(L"register FAILED. try again.");
+			}
+		}
+
+	}else{
+		// parse failed
+		Sleep(100);
+	}
+}
+// HTTP REQUEST RESPONSE FUNCTIONS -- end
+
+void CSSUMView::onLoginSuccess(){
+
+	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
+	pMain->Set_View(IDD_CRDLG);
+}
 
 // CSSUMView 메시지 처리기
 
-
+// JOIN button handler
 void CSSUMView::OnBnClickedButton2()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CJoinDlg join;
-	if(join.DoModal() == ID_OK)
+	INT_PTR ptr = join.DoModal();
+	if(ptr == IDOK)
 	{
 		UpdateData(TRUE);
-		
+		// TODO : 여기서 id랑 패스워드(검사), 이름 을 http request로 보내면 됨.
+
+		CStringA id(join.m_ID);
+		CStringA pw(join.m_PW);
+		CStringA name(join.m_Name);
+
+		HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
+		h.m_url = _T("http://125.209.197.196/index.php") ;
+		h.AddMultipartFormData("tag", "REGISTER") ;
+		h.AddMultipartFormData("id", id) ;
+		h.AddMultipartFormData("password", pw);
+		h.AddMultipartFormData("name", name);
+		h.EndMultipartFormData();
+		this->AddRequest(h);
+
 		UpdateData(FALSE);
 	}
 }
 
-class CMyManager : public FCHttpRequestManager {
-
-	virtual void OnAfterRequestSend (FCHttpRequest& rTask)
-    {
-		Beep(300,10);
-    }
-
-    virtual void OnAfterRequestFinish (FCHttpRequest& rTask)
-    {
-		Beep(900,10);
-    }
-};
-
-CMyManager httpMgr;
-
-void CSSUMView::OnBnClickedButton1()//Login 버튼 클릭시
+//Login button handler
+void CSSUMView::OnBnClickedButton1()
 {
 	// http request를 날려야함.
 
 	/*
 	UpdateData(true);
 
-	CString id = m_ID;
-	CString password = m_PW;
+	CStringA id(m_ID);
+	CStringA password(m_PW);
 
 	UpdateData(false); 
 
 	HTTP_REQUEST_HEADER   h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = _T("http://125.209.197.196/index.php") ;
-	h.AddMultipartFormData ("tag", "LOGIN") ;
-	h.AddMultipartFormData ("id", "") ;
-	h.AddMultipartFormData ("password", "1234") ;
-	httpMgr.AddRequest(h);
-	*/
-
-	//우선 무조건 넘어가도록 함
-	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
-	pMain->Set_View(IDD_CRDLG);
-}
+h.AddMultipartFormData("tag", "LOGIN") ;
+	h.AddMultipartFormData("id", id) ;
+	h.AddMultipartFormData("password", password);
+	h.EndMultipartFormData();
+	this->AddRequest(h);}

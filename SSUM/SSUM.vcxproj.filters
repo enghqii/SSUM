@@ -16,6 +16,9 @@
     <Filter Include="http_request">
       <UniqueIdentifier>{c5ca1b7b-31a1-44dc-b555-564efd625ebd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapidjson">
+      <UniqueIdentifier>{2f619a86-5da3-438a-babc-21dfca999544}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -86,6 +89,27 @@
     </ClInclude>
     <ClInclude Include="..\http-request\lib\http_request_manager.h">
       <Filter>http_request</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\document.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\filestream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\prettywriter.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\rapidjson.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\reader.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\stringbuffer.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\rapidjson\writer.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
