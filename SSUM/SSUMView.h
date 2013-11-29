@@ -51,6 +51,9 @@ public:
 	CString m_ID;
 	CString m_PW;
 	afx_msg void OnBnClickedButton1();
+
+private:
+	void onLoginSuccess();
 };
 
 #ifndef _DEBUG  // SSUMView.cpp의 디버그 버전

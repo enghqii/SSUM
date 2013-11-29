@@ -16,12 +16,15 @@
 #include "TestDlg.h"
 #include "CRDlg.h"
 #include "MainFrm.h"
+
 #include "../http-request/lib/http_request_manager.h"
+#include "../rapidjson/document.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+using namespace rapidjson;
 
 // CSSUMView
 
@@ -115,7 +118,33 @@ class CMyManager : public FCHttpRequestManager {
 
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask)
     {
-		Sleep(10);
+		// pop received data
+        std::string   receive_data ;
+        rTask.PopReceived (receive_data) ;
+
+		// json parse
+		rapidjson::Document doc;
+		doc.Parse<0>(receive_data.c_str());
+		
+		if(doc.HasParseError() == false){
+
+			std::string tag = doc["tag"].GetString();
+
+			if(tag.compare("LOGIN") == 0){
+				int success = doc["success"].GetInt();
+
+				if(success == 1){
+					// login success
+				}else{
+					// login failed
+				}
+			}
+
+
+		}else{
+			// parse failed
+			Sleep(100);
+		}
     }
 };
 

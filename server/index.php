@@ -2,10 +2,8 @@
 	// 클라이언트는 http request 를 통해 서버에게 정보를 준다.
 	require 'dbconfig.php';
 
-	//echo "begin";
-
 	// mysql connection
-	$conn = mysqli_connect($mysql_host,$mysql_user,$mysql_password);
+	$conn = mysqli_connect($mysql_host, $mysql_user, $mysql_password);
 	if(mysqli_connect_errno($conn)){
 		echo "DB connection fail " . mysqli_connect_error();
 		exit;
@@ -20,7 +18,7 @@
 		$tag = $_POST['tag'];
 
 		if($tag == 'LOGIN'){
-
+			
 			// values from post setting
 			$id = $_POST['id'];
 			$password = $_POST['password'];

@@ -113,6 +113,13 @@
   <ItemGroup>
     <ClInclude Include="..\http-request\lib\http_request.h" />
     <ClInclude Include="..\http-request\lib\http_request_manager.h" />
+    <ClInclude Include="..\rapidjson\document.h" />
+    <ClInclude Include="..\rapidjson\filestream.h" />
+    <ClInclude Include="..\rapidjson\prettywriter.h" />
+    <ClInclude Include="..\rapidjson\rapidjson.h" />
+    <ClInclude Include="..\rapidjson\reader.h" />
+    <ClInclude Include="..\rapidjson\stringbuffer.h" />
+    <ClInclude Include="..\rapidjson\writer.h" />
     <ClInclude Include="CRDlg.h" />
     <ClInclude Include="JoinDlg.h" />
     <ClInclude Include="MainFrm.h" />
