@@ -17,7 +17,6 @@
 #include "CRDlg.h"
 #include "MainFrm.h"
 
-#include "../http-request/lib/http_request_manager.h"
 #include "../rapidjson/document.h"
 
 #ifdef _DEBUG
@@ -109,46 +108,66 @@ CSSUMDoc* CSSUMView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 }
 #endif //_DEBUG
 
+// HTTP REQUEST RESPONSE FUNCTIONS -- begin
+void CSSUMView::OnAfterRequestSend (FCHttpRequest& rTask)
+{
+}
 
-class CMyManager : public FCHttpRequestManager {
+void CSSUMView::OnAfterRequestFinish (FCHttpRequest& rTask)
+{
+	// pop received data
+	std::string   receive_data ;
+	rTask.PopReceived (receive_data) ;
 
-	virtual void OnAfterRequestSend (FCHttpRequest& rTask)
-    {
-    }
+	// json parse
+	rapidjson::Document doc;
+	doc.Parse<0>(receive_data.c_str());
 
-    virtual void OnAfterRequestFinish (FCHttpRequest& rTask)
-    {
-		// pop received data
-        std::string   receive_data ;
-        rTask.PopReceived (receive_data) ;
+	if(doc.HasParseError() == false){
 
-		// json parse
-		rapidjson::Document doc;
-		doc.Parse<0>(receive_data.c_str());
-		
-		if(doc.HasParseError() == false){
+		// parse successful
+		// getting 'tag' value
+		std::string tag = doc["tag"].GetString();
 
-			std::string tag = doc["tag"].GetString();
+		// and dispatch here
+		if(tag.compare("LOGIN") == 0){
 
-			if(tag.compare("LOGIN") == 0){
-				int success = doc["success"].GetInt();
+			int success = doc["success"].GetInt();
 
-				if(success == 1){
-					// login success
-				}else{
-					// login failed
-				}
+			if(success == 1){
+
+				AfxMessageBox(L"login SUCCESSFUL");
+				this->onLoginSuccess();
+
+			}else{
+				AfxMessageBox(L"login FAILED");
 			}
 
+		}else if(tag.compare("REGISTER") == 0){
+			
+			int success = doc["success"].GetInt();
 
-		}else{
-			// parse failed
-			Sleep(100);
+			if(success == 1){
+				// TODO : register success
+				AfxMessageBox(L"register SUCCESSFUL.");
+			}else{
+				// TODO : register failed
+				AfxMessageBox(L"register FAILED. try again.");
+			}
 		}
-    }
-};
 
-CMyManager httpMgr;
+	}else{
+		// parse failed
+		Sleep(100);
+	}
+}
+// HTTP REQUEST RESPONSE FUNCTIONS -- end
+
+void CSSUMView::onLoginSuccess(){
+
+	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
+	pMain->Set_View(IDD_CRDLG);
+}
 
 // CSSUMView 메시지 처리기
 
@@ -173,7 +192,7 @@ void CSSUMView::OnBnClickedButton2()
 		h.AddMultipartFormData("password", pw);
 		h.AddMultipartFormData("name", name);
 		h.EndMultipartFormData();
-		httpMgr.AddRequest(h);
+		this->AddRequest(h);
 
 		UpdateData(FALSE);
 	}
@@ -197,9 +216,5 @@ void CSSUMView::OnBnClickedButton1()
 	h.AddMultipartFormData("id", id) ;
 	h.AddMultipartFormData("password", password);
 	h.EndMultipartFormData();
-	httpMgr.AddRequest(h);
-
-	//우선 무조건 넘어가도록 함
-	//CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
-	//pMain->Set_View(IDD_CRDLG);
+	this->AddRequest(h);
 }

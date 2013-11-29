@@ -7,7 +7,9 @@
 #include "resource.h"
 #include "SSUMDoc.h"
 
-class CSSUMView : public CFormView
+#include "../http-request/lib/http_request_manager.h"
+
+class CSSUMView : public CFormView, public FCHttpRequestManager
 {
 protected: // serialization에서만 만들어집니다.
 	CSSUMView();
@@ -52,8 +54,11 @@ public:
 	CString m_PW;
 	afx_msg void OnBnClickedButton1();
 
+// custom
 private:
 	void onLoginSuccess();
+	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
+    virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
 };
 
 #ifndef _DEBUG  // SSUMView.cpp의 디버그 버전
