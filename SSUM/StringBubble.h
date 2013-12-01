@@ -8,7 +8,7 @@ private:
 	CString m_data;
 public:
 	CStringBubble();
-	CStringBubble(int x,int y,CString data);
+	CStringBubble(CString data);
 	virtual ~CStringBubble();
 	
 	void onDraw(CDC* pDC);

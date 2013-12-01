@@ -12,13 +12,27 @@ CBubble::CBubble() : x(0), y(0)
 {
 }
 
-CBubble::CBubble(int x,int y) : x(x), y(y)
-{
-}
-
 CBubble::~CBubble()
 {
 }
 
 
 // CBubble ¸â¹ö ÇÔ¼ö
+
+void CBubble::setPosition(int x,int y)
+{
+	this->x = x;
+	this->y = y;
+}
+void CBubble::setPosition(POINT p)
+{
+	this->x = p.x;
+	this->y = p.y;
+}
+POINT CBubble::getNextPosition()
+{
+	POINT p;
+	p.x = this->x;
+	p.y = this->y-height-10;
+	return p;
+}
