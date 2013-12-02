@@ -17,6 +17,7 @@ IMPLEMENT_DYNCREATE(CCRDlg, CFormView)
 
 CCRDlg::CCRDlg()
 	: CFormView(CCRDlg::IDD)
+	,pstrFriends(NULL)
 {
 	this->m_name = CUserInfo::shared_info()->getName();
 	this->m_id = CUserInfo::shared_info()->getID();
@@ -25,7 +26,8 @@ CCRDlg::CCRDlg()
 
 CCRDlg::~CCRDlg()
 {
-	delete [] pstrFriends;
+	if(pstrFriends != NULL)
+		delete [] pstrFriends;
 }
 
 void CCRDlg::DoDataExchange(CDataExchange* pDX)
@@ -88,7 +90,7 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				pstrFriends[i] = doc["friends"][i].GetString();
 			}
 
-			{
+			/*{
 				std::string cummulativList = "";
 				
 				cummulativList += "Hello, ";
