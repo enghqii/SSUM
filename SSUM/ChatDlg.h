@@ -2,6 +2,17 @@
 
 #include "../http-request/lib/http_request_manager.h"
 
+class ChatData{
+public :
+	ChatData(){}
+
+	CString sender;
+	CString receiver;
+	CString message;
+	bool is_binary;
+	BYTE * binary;
+};
+
 
 // CChatDlg Æû ºäÀÔ´Ï´Ù.
 
@@ -24,6 +35,9 @@ public:
 
 // custom
 private:
+
+	int nTalk;
+	ChatData* pchatData;
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
 

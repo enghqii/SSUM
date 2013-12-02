@@ -82,7 +82,42 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				AfxMessageBox(_T("SEND_MSG failed"));
 			}
 		}else if(tag.compare("UPDATE_MSG") == 0){
+			
+			int nTalk = doc["numberOfTalk"].GetInt();
+			pchatData = new ChatData[nTalk];
 
+			for(int i=0;i<nTalk;i++){
+				pchatData[i].sender = doc["talk"][i]["sender"].GetString();
+				pchatData[i].receiver = doc["talk"][i]["receiver"].GetString();
+				pchatData[i].message = doc["talk"][i]["message"].GetString();
+				pchatData[i].is_binary = (doc["talk"][i]["is_binary"].GetString()[0] == '0' ? 0 : 1);
+				Sleep(0);
+			}
+
+			// remove this block
+			{
+				std::string cummulativList = "==";
+				CT2CA pszConvertedAnsiString(CUserInfo::shared_info()->getTargetID());
+				std::string s(pszConvertedAnsiString);
+				cummulativList += s;
+				cummulativList += " \n";
+
+				for(int i=0;i<nTalk;i++){
+					cummulativList += " \n";
+					
+					if(pchatData[i].sender == CUserInfo::shared_info()->getID()){
+						cummulativList += ">";
+					}else{
+						cummulativList += "*";
+					}
+					
+					CT2CA _(pchatData[i].message);
+					std::string __(_);
+					cummulativList += __;
+				}
+
+				SetDlgItemText(IDC_DUMMYSTATIC,CString(cummulativList.c_str()));
+			}
 		}
 	}
 }
@@ -114,7 +149,7 @@ void CChatDlg::OnBnClickedButton1()
 /// dummy button
 void CChatDlg::OnBnClickedButton2()
 {
-	SetDlgItemText(IDC_DUMMYSTATIC,CUserInfo::shared_info()->getTargetID());
+	//SetDlgItemText(IDC_DUMMYSTATIC,CUserInfo::shared_info()->getTargetID());
 
 	UpdateData(true);
 	CStringA id(CUserInfo::shared_info()->getID());
