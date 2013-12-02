@@ -88,9 +88,11 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 			int nFriends = doc["numberOfFriends"].GetInt();
 			pstrFriends = new std::string[nFriends];
+			pstrFriendsID = new std::string[nFriends];
 
 			for(int i=0;i<nFriends;i++){
 				pstrFriends[i] = doc["friends"][i].GetString();
+				pstrFriendsID[i] = doc["friendsID"][i].GetString();
 			}
 
 			{
@@ -149,7 +151,8 @@ void CCRDlg::OnBnClickedUpdateList()
 
 void CCRDlg::OnBnClickedChat1() // goto chat room
 {
-	CUserInfo::shared_info()->setTargetID(CString(pstrFriends[0].c_str()));
+	CUserInfo::shared_info()->setTargetName(CString(pstrFriends[0].c_str()));
+	CUserInfo::shared_info()->setTargetID(CString(pstrFriendsID[0].c_str()));
 	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 	pMain->Set_View(IDD_CHATDLG);
 }
@@ -157,7 +160,8 @@ void CCRDlg::OnBnClickedChat1() // goto chat room
 
 void CCRDlg::OnBnClickedChat2()
 {
-	CUserInfo::shared_info()->setTargetID(CString(pstrFriends[1].c_str()));
+	CUserInfo::shared_info()->setTargetName(CString(pstrFriends[1].c_str()));
+	CUserInfo::shared_info()->setTargetID(CString(pstrFriendsID[1].c_str()));
 	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 	pMain->Set_View(IDD_CHATDLG);
 }
@@ -165,7 +169,8 @@ void CCRDlg::OnBnClickedChat2()
 
 void CCRDlg::OnBnClickedChat3()
 {
-	CUserInfo::shared_info()->setTargetID(CString(pstrFriends[2].c_str()));
+	CUserInfo::shared_info()->setTargetName(CString(pstrFriends[2].c_str()));
+	CUserInfo::shared_info()->setTargetID(CString(pstrFriendsID[2].c_str()));
 	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 	pMain->Set_View(IDD_CHATDLG);
 }

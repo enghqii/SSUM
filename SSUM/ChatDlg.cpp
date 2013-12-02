@@ -77,7 +77,7 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 			int success = doc["success"].GetInt();
 
 			if(success == 1){
-				AfxMessageBox(_T("SEND_MSG succeed"));
+				//AfxMessageBox(_T("SEND_MSG succeed"));
 			}else{
 				AfxMessageBox(_T("SEND_MSG failed"));
 			}

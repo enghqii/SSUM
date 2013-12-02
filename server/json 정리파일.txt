@@ -44,6 +44,7 @@
 	"tag": "GET_FRIEND_LIST",
 	"numberOfFriends" : <n>,
 	"friends": ["name1","name2","name3"]
+	"friendsID": ["name1","name2","name3"]
 }
 
 4.1 메세지보내기 요청

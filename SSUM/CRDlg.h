@@ -27,6 +27,7 @@ private :
 
 	int nFriends;
 	std::string * pstrFriends;
+	std::string * pstrFriendsID;
 
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);

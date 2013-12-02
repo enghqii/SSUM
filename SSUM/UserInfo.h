@@ -11,8 +11,11 @@ public:
 	CString getID(){ return this->m_id; } 
 	void setID(CString id){ this->m_id = id; }
 	
-	CString getTargetID(){ return this->m_tagetID; } 
-	void setTargetID(CString m_tagetID){ this->m_tagetID = m_tagetID; }
+	CString getTargetID(){ return this->m_targetID; } 
+	void setTargetID(CString m_targetID){ this->m_targetID = m_targetID; }
+	
+	CString getTargetName(){ return this->m_targetName; } 
+	void setTargetName(CString m_targetName){ this->m_targetName = m_targetName; }
 
 private:
 	
@@ -22,6 +25,7 @@ private:
 	//CString m_password;
 	CString m_name;
 
-	CString m_tagetID;
+	CString m_targetName;
+	CString m_targetID;
 };
 

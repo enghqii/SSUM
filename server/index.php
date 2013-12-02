@@ -76,19 +76,21 @@
 			//CLog::write(array('GETFRIENDLIST'),"test.txt");
 
 			$id = $_POST['id'];
-			$query = "SELECT name FROM member WHERE id != '{$id}';";
+			$query = "SELECT id, name FROM member WHERE id != '{$id}';";
 			$res = mysqli_query($conn,$query);
 
 			$friend_list = array();
+			$friendID_list = array();
 			$i = 0;
 
 			while($row = mysqli_fetch_array($res)){
 				//echo("i is {$i} and {$row['name']}");
 				$friend_list[$i] = $row['name'];
+				$friendID_list[$i] = $row['id'];
 				$i++;
 			}
 
-			$response = array("tag" => "GET_FRIEND_LIST", "numberOfFriends" => $i, "friends"=> $friend_list);
+			$response = array("tag" => "GET_FRIEND_LIST", "numberOfFriends" => $i, "friends"=> $friend_list, "friendsID" => $friendID_list);
 			echo json_encode($response);
 
 		}else if($tag == 'SEND_MSG'){
@@ -116,7 +118,7 @@
 			$receiver = $_POST['receiver'];
 			$lastTime = $_POST['lastTime'];
 
-			$query = "SELECT * FROM messages WHERE time > '{$lastTime}'";
+			$query = "SELECT * FROM messages WHERE ( ( sender = '{$sender}' OR sender = '{$receiver}' ) AND ( receiver = '{$sender}' OR receiver = '{$receiver}' ) ) AND time > '{$lastTime}'";
 			$res = mysqli_query($conn,$query);
 
 			$msg_list = array();
