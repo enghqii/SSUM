@@ -131,6 +131,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestDlg.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="UserInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CRDlg.cpp" />
@@ -145,6 +146,7 @@
     </ClCompile>
     <ClCompile Include="TestDlg.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SSUM.rc" />

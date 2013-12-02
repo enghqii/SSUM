@@ -16,6 +16,7 @@
 #include "CRDlg.h"
 #include "MainFrm.h"
 
+#include "UserInfo.h"
 #include "../rapidjson/document.h"
 
 #ifdef _DEBUG
@@ -137,6 +138,10 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 
 				if(success == 1){
 
+					this->m_NAME = doc["name"].GetString();
+					CUserInfo::shared_info()->setName(m_NAME);
+					CUserInfo::shared_info()->setID(m_ID);
+
 					AfxMessageBox(L"login SUCCESSFUL");
 					this->onLoginSuccess();
 
@@ -158,8 +163,9 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 			}
 
 		}else{
+			AfxMessageBox(L"received wrong data. check net status.");
 			// parse failed
-			Sleep(100);
+			//Sleep(100);
 		}
 	}
 	// HTTP REQUEST RESPONSE FUNCTIONS -- end
@@ -203,7 +209,6 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 	void CSSUMView::OnBnClickedButton1()
 	{
 		// http request를 날려야함.
-
 		UpdateData(true);
 
 		CStringA id(m_ID);

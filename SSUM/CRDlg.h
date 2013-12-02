@@ -31,6 +31,9 @@ private :
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
 
+	CString m_name;
+	CString m_id;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 

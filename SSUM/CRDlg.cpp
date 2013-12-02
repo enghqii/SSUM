@@ -5,6 +5,8 @@
 #include "SSUM.h"
 #include "CRDlg.h"
 #include "MainFrm.h"
+
+#include "UserInfo.h"
 #include "../rapidjson/document.h"
 
 const char URL[] = "http://125.209.197.196/index.php";
@@ -16,6 +18,9 @@ IMPLEMENT_DYNCREATE(CCRDlg, CFormView)
 CCRDlg::CCRDlg()
 	: CFormView(CCRDlg::IDD)
 {
+	this->m_name = CUserInfo::shared_info()->getName();
+	this->m_id = CUserInfo::shared_info()->getID();
+	Sleep(10);
 }
 
 CCRDlg::~CCRDlg()
@@ -83,14 +88,28 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				pstrFriends[i] = doc["friends"][i].GetString();
 			}
 
-			/* TODO remove this block*/{
+			{
 				std::string cummulativList = "";
+				
+				cummulativList += "Hello, ";
+				CT2CA pszConvertedAnsiString(CUserInfo::shared_info()->getName());
+				std::string s(pszConvertedAnsiString);
+				cummulativList += s;
+				cummulativList += " ( id = ";
+				CT2CA pszConvertedAnsiString1(CUserInfo::shared_info()->getID());
+				std::string s1(pszConvertedAnsiString1);
+				cummulativList += s1;
+				cummulativList += " ) ";
+				
+				cummulativList += " \n";
+
 				for(int i=0;i<nFriends;i++){
 					cummulativList += (pstrFriends[i]);
+					cummulativList += " \n";
 				}
 
 				SetDlgItemText(IDC_FRIEND_LIST,CString(cummulativList.c_str()));
-			}
+			}/* TODO remove this block*/
 		}
 	}
 }
@@ -111,9 +130,7 @@ void CCRDlg::OnBnClickedUpdateList()
 {
 	// TODO : 친구 목록 얻어오는 리퀘스트 보내기
 	
-	UpdateData(true);
-	CStringA id("asdf");
-	UpdateData(false);
+	CStringA id(CUserInfo::shared_info()->getID());
 	
 	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = URL ;

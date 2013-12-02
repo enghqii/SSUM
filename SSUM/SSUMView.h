@@ -52,6 +52,7 @@ public:
 	afx_msg void OnBnClickedButton2();
 	CString m_ID;
 	CString m_PW;
+	CString m_NAME;
 	afx_msg void OnBnClickedButton1();
 
 // custom

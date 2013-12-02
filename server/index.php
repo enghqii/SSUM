@@ -29,21 +29,23 @@
 			$password = $_POST['password'];
 			
 			// query
-			$query = "SELECT id, password FROM member WHERE id = '{$id}';";
+			$query = "SELECT * FROM member WHERE id = '{$id}';";
 			$res = mysqli_query($conn,$query);
 
 			// check valid
 			$success = false;
+			$name = "";
 			while($row = mysqli_fetch_array($res)){
 				//print_r($row);
 				if($row['password'] == md5($password)){
 					$success = true;
+					$name = $row['name'];
 					break;
 				}
 			}
 
 			if($success){
-				$response = array("tag" => "LOGIN", "success" => 1);
+				$response = array("tag" => "LOGIN","name" => $name, "success" => 1);
 			}else{
 				$response = array("tag" => "LOGIN", "success" => 0, "error_msg" => "login failed");
 			}

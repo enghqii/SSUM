@@ -12,8 +12,9 @@
 
 {
 	"tag" : "LOGIN"
+	"name" : /* if login succeed */
 	"success" : <fail - 0, success - 1>,
-	"error_msg" : ""
+	"error_msg" : /* if login failed */ 
 }
 
 
