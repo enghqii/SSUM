@@ -8,6 +8,7 @@
 #include "MainFrm.h"
 #include "CRDlg.h"
 #include "SSUMView.h"
+#include "ChatDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -332,9 +333,13 @@ void CMainFrame::Set_View(UINT ViewID)
         case IDD_SSUM_FORM:
 			pNewView = RUNTIME_CLASS(CSSUMView);
             break;
-
+			
         case IDD_CRDLG:
 			pNewView = RUNTIME_CLASS(CCRDlg);
+            break;
+
+        case IDD_CHATDLG:
+			pNewView = RUNTIME_CLASS(CChatDlg);
             break;
     }
 

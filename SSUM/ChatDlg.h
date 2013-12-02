@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../http-request/lib/http_request_manager.h"
 
 
 // CChatDlg 폼 뷰입니다.
 
-class CChatDlg : public CFormView
+class CChatDlg : public CFormView, public FCHttpRequestManager
 {
 	DECLARE_DYNCREATE(CChatDlg)
 
@@ -21,10 +22,19 @@ public:
 #endif
 #endif
 
+// custom
+private:
+	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
+    virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton1();
+	CString m_message;
 };
 
 

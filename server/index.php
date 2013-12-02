@@ -93,9 +93,41 @@
 
 		}else if($tag == 'SEND_MSG'){
 			//CLog::write(array('send msg'),"test.txt");
+			$sender = $_POST['sender'];
+			$receiver = $_POST['receiver'];
+			$message = $_POST['message'];
+			$is_binary = false;
+
+			$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}');";
+
+			$res = mysqli_query($conn,$query);
+
+			if($res == true){
+				$response = array("tag" => "SEND_MSG", "success" => 1);
+			}else{
+				$response = array("tag" => "SEND_MSG", "success" => 0, "error_msg" => "query failed");
+			}
+			echo json_encode($response);
 
 		}else if($tag == 'UPDATE_MSG'){
 			//CLog::write(array('update msg'),"test.txt");
+
+			$sender = $_POST['sender'];
+			$receiver = $_POST['receiver'];
+			$lastTime = $_POST['lastTime'];
+
+			$query = "SELECT * FROM messages WHERE time > '{$lastTime}'";
+			$res = mysqli_query($conn,$query);
+
+			$msg_list = array();
+			$i = 0;
+
+			while($row = mysqli_fetch_array($res)){
+				$msg_list[$i] = $row;
+				$i++;
+			}
+			$response = array("tag" => "UPDATE_MSG", "numberOfTalk" => $i, "talk"=> $msg_list);
+			echo json_encode($response);
 
 		}else{
 			//CLog::write(array('super else'),"test.txt");

@@ -45,3 +45,35 @@
 	"numberOfFriends" : <n>,
 	"friends": ["name1","name2","name3"]
 }
+
+4.1 메세지보내기 요청
+{
+	"tag": "SEND_MSG",
+	"sender" : <>,
+	"receiver" : <>,
+	"message" : "asdfasdfadsfsdf",
+	"is_binary" : false,
+	"binary" : adfsdfs
+}
+
+4.1 메세지보내기 요청
+{
+	"tag": "SEND_MSG",
+	"success" : <>,
+	"error_msg" : <>
+}
+
+4.2 메세지 업데이트 요청
+{
+	"tag": "UPDATE_MSG,
+	"sender" : <>,
+	"receiver" : <>,
+	"lastTime" : "";
+}
+
+4.3 메세지 업데이트 응답
+{
+	"tag": "UPDATE_MSG,
+	"numberOfTalk" : <n>,
+	"talk": ["name1","name2","name3"]
+}

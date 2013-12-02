@@ -120,6 +120,7 @@
     <ClInclude Include="..\rapidjson\reader.h" />
     <ClInclude Include="..\rapidjson\stringbuffer.h" />
     <ClInclude Include="..\rapidjson\writer.h" />
+    <ClInclude Include="ChatDlg.h" />
     <ClInclude Include="CRDlg.h" />
     <ClInclude Include="JoinDlg.h" />
     <ClInclude Include="MainFrm.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="UserInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChatDlg.cpp" />
     <ClCompile Include="CRDlg.cpp" />
     <ClCompile Include="JoinDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
