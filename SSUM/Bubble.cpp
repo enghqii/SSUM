@@ -8,8 +8,20 @@
 
 // CBubble
 
-CBubble::CBubble() : x(0), y(0)
+CBubble::CBubble() : x(10), y(0), align(CB_LEFT)
 {
+}
+
+CBubble::CBubble(UINT align) : y(0), align(align)
+{
+	if(align == CB_LEFT)
+	{
+		x = 10;
+	}
+	else if(align == CB_RIGHT)
+	{
+		x = 200;
+	}
 }
 
 CBubble::~CBubble()
@@ -19,20 +31,42 @@ CBubble::~CBubble()
 
 // CBubble ¸â¹ö ÇÔ¼ö
 
-void CBubble::setPosition(int x,int y)
+int CBubble::getHeight()
 {
-	this->x = x;
+	return height;
+}
+void CBubble::setPosition(int y)
+{
 	this->y = y;
 }
-void CBubble::setPosition(POINT p)
+int CBubble::getNextPosition()
 {
-	this->x = p.x;
-	this->y = p.y;
+	return this->y-height-10;
 }
-POINT CBubble::getNextPosition()
+BOOL CBubble::isBLocate(CPoint point)
 {
-	POINT p;
-	p.x = this->x;
-	p.y = this->y-height-10;
-	return p;
+	if(align==CB_LEFT)
+	{
+		if(x < point.x && x + width > point.x &&
+			y > point.y && y - height < point.y)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	else if(align==CB_RIGHT)
+	{
+		if(x > point.x && x - width < point.x &&
+			y > point.y && y - height < point.y)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 }

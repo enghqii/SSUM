@@ -11,11 +11,43 @@
 CImageBubble::CImageBubble() : CBubble()
 {
 }
-CImageBubble::CImageBubble(CString path) : CBubble()
+CImageBubble::CImageBubble(CString path) : CBubble(), path(path)
 {
 	HANDLE bmp;
 	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
 	m_data.Attach(bmp);
+	
+	BITMAP bm;
+	m_data.GetBitmap(&bm);
+	if(bm.bmWidth > 105)
+	{
+		height = bm.bmHeight*105/bm.bmWidth+12*2;
+		width = bm.bmWidth*105/bm.bmWidth+12*2;
+	}
+	else
+	{
+		height = bm.bmHeight+12*2;
+		width = bm.bmWidth+12*2;
+	}
+}
+CImageBubble::CImageBubble(CString path,UINT align) : CBubble(align) ,path(path)
+{
+	HANDLE bmp;
+	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
+	m_data.Attach(bmp);
+
+	BITMAP bm;
+	m_data.GetBitmap(&bm);
+	if(bm.bmWidth > 105)
+	{
+		height = bm.bmHeight*105/bm.bmWidth+12*2;
+		width = bm.bmWidth*105/bm.bmWidth+12*2;
+	}
+	else
+	{
+		height = bm.bmHeight+12*2;
+		width = bm.bmWidth+12*2;
+	}
 }
 CImageBubble::~CImageBubble()
 {
@@ -25,48 +57,83 @@ CImageBubble::~CImageBubble()
 // CImageBubble ¸â¹ö ÇÔ¼ö
 void CImageBubble::onDraw(CDC* pDC)
 {
-	CDC memDC;
-	memDC.CreateCompatibleDC(pDC);
-	CBitmap *pOldBitmap = memDC.SelectObject(&m_data);
-	BITMAP bm;
-	m_data.GetBitmap(&bm);
-	if(bm.bmWidth > 105)
+	if(align == CB_LEFT)
 	{
-		CBrush brush(RGB(250,237,125));
+		CDC memDC;
+		memDC.CreateCompatibleDC(pDC);
+		CBitmap *pOldBitmap = memDC.SelectObject(&m_data);
+		
+		CBrush brush(RGB(255,255,255));
 		CBrush *pOldBrush;
 		pOldBrush = pDC->SelectObject(&brush);
-		pDC->RoundRect(x,y-bm.bmHeight*105/bm.bmWidth-12*2,x+bm.bmWidth*105/bm.bmWidth+12*2,y,12,12);
-		height = bm.bmHeight*105/bm.bmWidth+12*2;
-
+		
+		pDC->RoundRect(x,y-height,x+width,y,12,12);
+		
 		pDC->SelectObject(pOldBrush);
 		brush.DeleteObject();
 		
+		BITMAP bm;
+		m_data.GetBitmap(&bm);
+		
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->StretchBlt(x+12,y-bm.bmHeight*105/bm.bmWidth-12,
-			bm.bmWidth*105/bm.bmWidth,bm.bmHeight*105/bm.bmWidth,
-			&memDC,0,0,bm.bmWidth,bm.bmHeight,
-			SRCCOPY);
+		if(bm.bmWidth > 105)
+		{
+			pDC->StretchBlt(x+12,y-height+12,
+				width-12*2,height-12*2,
+				&memDC,0,0,bm.bmWidth,bm.bmHeight,
+				SRCCOPY);
+		}
+		else
+		{
+			pDC->BitBlt(x+12,y-bm.bmHeight-12,x+bm.bmWidth+12,y-12,&memDC,0,0,SRCCOPY);
+		}
+
+		memDC.SelectObject(pOldBitmap);
 	}
-	else
+	else if(align == CB_RIGHT)
 	{
+		CDC memDC;
+		memDC.CreateCompatibleDC(pDC);
+		CBitmap *pOldBitmap = memDC.SelectObject(&m_data);
+		
 		CBrush brush(RGB(250,237,125));
 		CBrush *pOldBrush;
 		pOldBrush = pDC->SelectObject(&brush);
-		pDC->RoundRect(x,y-bm.bmHeight-12*2,x+bm.bmWidth+12*2,y,12,12);
-		height = bm.bmHeight+12*2;
-		int test = y-height;
-
+		
+		pDC->RoundRect(x-width,y-height,x,y,12,12);
+		
 		pDC->SelectObject(pOldBrush);
 		brush.DeleteObject();
 		
+		BITMAP bm;
+		m_data.GetBitmap(&bm);
+		
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->BitBlt(x+12,y-bm.bmHeight-12,x+bm.bmWidth+12,y-12,&memDC,0,0,SRCCOPY);
-	}
-	memDC.SelectObject(pOldBitmap);
+		if(bm.bmWidth > 105)
+		{
+			pDC->StretchBlt(x-width+12,y-height+12,
+				width-12*2,height-12*2,
+				&memDC,0,0,bm.bmWidth,bm.bmHeight,
+				SRCCOPY);
+		}
+		else
+		{
+			pDC->BitBlt(x-width+12,y-bm.bmHeight-12,x+12,y-12,&memDC,0,0,SRCCOPY);
+		}
 
+		memDC.SelectObject(pOldBitmap);
+	}
 }
-void CImageBubble::onLClicked()
+void CImageBubble::onLClicked(HWND& m_hWnd)
 {
+	if((HINSTANCE)32 > ShellExecute(m_hWnd,L"open",path,NULL,NULL,SW_SHOW))
+	{
+		OPENASINFO oai;
+		oai.pcszFile = path;
+		oai.pcszClass = NULL;
+		oai.oaifInFlags = OAIF_HIDE_REGISTRATION|OAIF_EXEC;
+		SHOpenWithDialog(m_hWnd,&oai);
+	}	
 }
 void CImageBubble::onRClicked()
 {

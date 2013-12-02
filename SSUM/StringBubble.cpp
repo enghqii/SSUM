@@ -9,21 +9,10 @@
 // CStringBubble
 
 CStringBubble::CStringBubble() : CBubble(), m_data(L"")
-{
-	
+{	
 }
 
 CStringBubble::CStringBubble(CString data) : CBubble(), m_data(data)
-{
-}
-
-CStringBubble::~CStringBubble()
-{
-}
-
-
-// CStringBubble ¸â¹ö ÇÔ¼ö
-void CStringBubble::onDraw(CDC* pDC)
 {
 	int length = m_data.GetLength();
 	int width;
@@ -58,30 +47,107 @@ void CStringBubble::onDraw(CDC* pDC)
 		}
 	}
 	this->height = height*13+12*2;
-	CBrush brush(RGB(250,237,125));
-	CBrush *pOldBrush;
-	pOldBrush = pDC->SelectObject(&brush);
-	pDC->RoundRect(x,y-height*13-12*2,x+width*7+12*2,y,12,12);
-
-	pDC->SelectObject(pOldBrush);
-	brush.DeleteObject();
-	
-	pDC->SetBkMode(TRANSPARENT);
-	CFont font;
-	CFont *pOldFont;
-	font.CreatePointFont(100,L"±¼¸²");
-	pOldFont = pDC->SelectObject(&font);
-	RECT rec;
-	rec.left = x+12;
-	rec.bottom = y-12;
-	rec.top = y-height*13-12;
-	rec.right = x+width*7+12;
-	pDC->DrawTextW(m_data,&rec,DT_LEFT|DT_WORDBREAK);
-	pDC->SelectObject(pOldFont);
-	font.DeleteObject();
+	this->width = width*7+12*2;
 }
 
-void CStringBubble::onLClicked()
+CStringBubble::CStringBubble(CString data,UINT align) : CBubble(align), m_data(data)
+{
+	int length = m_data.GetLength();
+	int width;
+	int height = 0;
+	int i=0;
+	while(1)
+	{		
+		int size;
+		for(size=0;size<15 && i<length;i++)
+		{
+			if(isascii(m_data.GetAt(i)))
+			{
+				size+=1;
+			}
+			else
+			{
+				size+=2;
+			}
+		}
+		height++;
+		if(i>=length)
+		{
+			if(height>1)
+			{
+				width=15;
+			}
+			else
+			{
+				width=size;
+			}
+			break;
+		}
+	}
+	this->height = height*13+12*2;
+	this->width = width*7+12*2;
+}
+CStringBubble::~CStringBubble()
+{
+}
+
+
+// CStringBubble ¸â¹ö ÇÔ¼ö
+void CStringBubble::onDraw(CDC* pDC)
+{
+	if(align == CB_LEFT)
+	{
+		CBrush brush(RGB(255,255,255));
+		CBrush *pOldBrush;
+		pOldBrush = pDC->SelectObject(&brush);
+		pDC->RoundRect(x,y-height,x+width,y,12,12);
+
+		pDC->SelectObject(pOldBrush);
+		brush.DeleteObject();
+
+		pDC->SetBkMode(TRANSPARENT);
+		CFont font;
+		CFont *pOldFont;
+		font.CreatePointFont(100,L"±¼¸²");
+		pOldFont = pDC->SelectObject(&font);
+		CRect rec;
+		rec.left = x+12;
+		rec.bottom = y-12;
+		rec.top = y-height+12;
+		rec.right = x+width-12; 
+		//pDC->Rectangle(&rec);
+		pDC->DrawTextW(m_data,&rec,DT_LEFT|DT_WORDBREAK|DT_EDITCONTROL);
+		pDC->SelectObject(pOldFont);
+		font.DeleteObject();
+	}
+	else if(align == CB_RIGHT)
+	{
+		CBrush brush(RGB(250,237,125));
+		CBrush *pOldBrush;
+		pOldBrush = pDC->SelectObject(&brush);
+		pDC->RoundRect(x-width,y-height,x,y,12,12);
+
+		pDC->SelectObject(pOldBrush);
+		brush.DeleteObject();
+
+		pDC->SetBkMode(TRANSPARENT);
+		CFont font;
+		CFont *pOldFont;
+		font.CreatePointFont(100,L"±¼¸²");
+		pOldFont = pDC->SelectObject(&font);
+		CRect rec;
+		rec.left = x-width+12;
+		rec.bottom = y-12;
+		rec.top = y-height+12;
+		rec.right = x-12; 
+		//pDC->Rectangle(&rec);
+		pDC->DrawTextW(m_data,&rec,DT_LEFT|DT_WORDBREAK|DT_EDITCONTROL);
+		pDC->SelectObject(pOldFont);
+		font.DeleteObject();
+	}
+}
+
+void CStringBubble::onLClicked(HWND& m_hWnd)
 {
 
 }

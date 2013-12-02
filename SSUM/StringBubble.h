@@ -9,10 +9,11 @@ private:
 public:
 	CStringBubble();
 	CStringBubble(CString data);
+	CStringBubble(CString data,UINT align);
 	virtual ~CStringBubble();
 	
 	void onDraw(CDC* pDC);
-	void onLClicked();
+	void onLClicked(HWND& m_hWnd);
 	void onRClicked();
 
 };
