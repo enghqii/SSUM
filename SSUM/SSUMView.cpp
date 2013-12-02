@@ -24,6 +24,8 @@
 
 using namespace rapidjson;
 
+const char URL[] = "http://125.209.197.196/index.php";
+
 // CSSUMView
 
 IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
@@ -163,7 +165,7 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 	// HTTP REQUEST RESPONSE FUNCTIONS -- end
 
 	void CSSUMView::onLoginSuccess(){
-
+		
 		CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 		pMain->Set_View(IDD_CRDLG);
 	}
@@ -185,7 +187,7 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 			CStringA name(join.m_Name);
 
 			HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
-			h.m_url = _T("http://125.209.197.196/index.php") ;
+			h.m_url = URL ;
 			h.AddMultipartFormData("tag", "REGISTER") ;
 			h.AddMultipartFormData("id", id) ;
 			h.AddMultipartFormData("password", pw);
@@ -210,7 +212,7 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 		UpdateData(false);
 
 		HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
-		h.m_url = _T("http://125.209.197.196/index.php") ;
+		h.m_url = URL ;
 		h.AddMultipartFormData("tag", "LOGIN") ;
 		h.AddMultipartFormData("id", id) ;
 		h.AddMultipartFormData("password", password);

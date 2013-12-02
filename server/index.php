@@ -1,6 +1,10 @@
 <?php
 	// 클라이언트는 http request 를 통해 서버에게 정보를 준다.
 	require 'dbconfig.php';
+	//require 'logger.php';
+
+	//CLog::init('test.txt');
+	//CLog::write(array('begin'),"test.txt");
 
 	// mysql connection
 	$conn = mysqli_connect($mysql_host, $mysql_user, $mysql_password);
@@ -18,6 +22,7 @@
 		$tag = $_POST['tag'];
 
 		if($tag == 'LOGIN'){
+			//CLog::write(array('LOGIN'),"test.txt");
 			
 			// values from post setting
 			$id = $_POST['id'];
@@ -63,13 +68,43 @@
 			}
 			echo json_encode($response);
 
+		}else if($tag == 'GET_FRIEND_LIST'){
+
+			//echo("why!");	
+			//CLog::write(array('GETFRIENDLIST'),"test.txt");
+
+			$id = $_POST['id'];
+			$query = "SELECT name FROM member WHERE id != '{$id}';";
+			$res = mysqli_query($conn,$query);
+
+			$friend_list = array();
+			$i = 0;
+
+			while($row = mysqli_fetch_array($res)){
+				//echo("i is {$i} and {$row['name']}");
+				$friend_list[$i] = $row['name'];
+				$i++;
+			}
+
+			$response = array("tag" => "GET_FRIEND_LIST", "numberOfFriends" => $i, "friends"=> $friend_list);
+			echo json_encode($response);
+
 		}else if($tag == 'SEND_MSG'){
+			//CLog::write(array('send msg'),"test.txt");
+
+		}else if($tag == 'UPDATE_MSG'){
+			//CLog::write(array('update msg'),"test.txt");
 
 		}else{
-			// 태그값은 있는데 정해지지 않은 것임.
+			//CLog::write(array('super else'),"test.txt");
+
+			// 태그값은 있는데 규약이랑 다름
+			$response = array("tag" => $tag, "success" => 0, "error_msg" => "I can't understand what the tag means.");
+			echo json_encode($response);
 		}
 
 	}else{
+		//CLog::write(array('Invalid tag value.'),"test.txt");
 		echo ("Invalid tag value.");
 	}
 

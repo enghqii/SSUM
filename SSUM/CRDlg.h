@@ -1,10 +1,11 @@
 #pragma once
 
+#include "../http-request/lib/http_request_manager.h"
 
 
 // CCRDlg 폼 뷰입니다.
 
-class CCRDlg : public CFormView
+class CCRDlg : public CFormView, public FCHttpRequestManager
 {
 	DECLARE_DYNCREATE(CCRDlg)
 
@@ -21,6 +22,15 @@ public:
 #endif
 #endif
 
+// custom
+private :
+
+	int nFriends;
+	std::string * pstrFriends;
+
+	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
+    virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
@@ -28,6 +38,7 @@ protected:
 public:
 //	afx_msg void On32772();
 	afx_msg void On32772();
+	afx_msg void OnBnClickedUpdateList();
 };
 
 

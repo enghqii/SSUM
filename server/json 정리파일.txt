@@ -31,3 +31,16 @@
 	"success" : <>,
 	"error_msg" : <>
 }
+
+3.1 회원 목록 요청 request
+{
+	"tag" : "GET_FRIEND_LIST",
+	"id" : <ID>
+}
+
+3.2 회원 목록 요청 response
+{
+	"tag": "GET_FRIEND_LIST",
+	"numberOfFriends" : <n>,
+	"friends": ["name1","name2","name3"]
+}
