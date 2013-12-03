@@ -33,7 +33,6 @@ void CCRDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST, m_List);
-	DDX_Control(pDX, IDC_COMBO, m_Combo);
 }
 
 BEGIN_MESSAGE_MAP(CCRDlg, CFormView)
@@ -100,12 +99,10 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 			//
 			m_List.ResetContent();
-			m_Combo.ResetContent();
 			for(int i=0;i<nFriends;i++)
 			{
 				CString temp(pstrFriends[i].c_str());
 				m_List.AddString(temp);
-				m_Combo.AddString(temp);
 			}
 
 		}

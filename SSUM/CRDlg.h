@@ -50,8 +50,9 @@ public:
 	virtual void OnInitialUpdate();
 	virtual void OnDraw(CDC* /*pDC*/);
 	CListBox m_List;
-	CComboBox m_Combo;
 	afx_msg void OnLbnDblclkList();
+
+	
 };
 
 

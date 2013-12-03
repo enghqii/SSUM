@@ -64,6 +64,19 @@ public:
 	afx_msg void OnMenuFrientlist();
 	CObArray bubble;
 	virtual void OnDraw(CDC* /*pDC*/);
+	int stIndex,endIndex;
+	void SetPosition(void);
+	CScrollBar m_scroll;
+	afx_msg void OnNMThemeChangedScrollbar1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	CPoint np;
+	afx_msg void OnChatpopupView();
+	afx_msg void OnChatpopupSave();
+	afx_msg void OnChatpopupSaveas();
 };
 
 
