@@ -213,7 +213,7 @@ void CBinaryBubble::onRClickedSave(HWND& m_hWnd)
 }
 void CBinaryBubble::onRClickedSaveAs(HWND& m_hWnd)
 {
-	CString szFilter = L"All Files(*.*)|*.*|";
+	CString szFilter = L"PDF (*.pdf)|*.pdf|Word (*.doc;*.docx;)|*.doc;*.docx;|PowerPoint (*.ppt;*.pptx;)|*.ppt;*.pptx;|All Files(*.*)|*.*|";
 	CFileDialog dlg(false,L"",L"",OFN_HIDEREADONLY,szFilter);
 	if(dlg.DoModal() == IDOK)
 	{

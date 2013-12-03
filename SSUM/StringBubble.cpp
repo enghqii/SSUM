@@ -46,7 +46,7 @@ CStringBubble::CStringBubble(CString data) : CBubble(), m_data(data)
 		}
 	}
 	this->height = height*13+12*2;
-	this->width = width*7+12*2;
+	this->width = width*10+13*2;
 }
 
 CStringBubble::CStringBubble(CString data,UINT align) : CBubble(align), m_data(data)
@@ -84,7 +84,7 @@ CStringBubble::CStringBubble(CString data,UINT align) : CBubble(align), m_data(d
 		}
 	}
 	this->height = height*13+12*2;
-	this->width = width*7+12*2;
+	this->width = width*10+12*2;
 }
 CStringBubble::~CStringBubble()
 {

@@ -12,9 +12,10 @@ CImageBubble::CImageBubble() : CBubble()
 }
 CImageBubble::CImageBubble(CString fileName,CString path) : CBubble(), fileName(fileName), path(path)
 {
-	HANDLE bmp;
-	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
-	m_data.Attach(bmp);
+	CImage image;
+	image.Load(path);
+
+	m_data.Attach(image.Detach());
 	
 	BITMAP bm;
 	m_data.GetBitmap(&bm);
@@ -31,9 +32,10 @@ CImageBubble::CImageBubble(CString fileName,CString path) : CBubble(), fileName(
 }
 CImageBubble::CImageBubble(CString fileName,CString path,UINT align) : CBubble(align), fileName(fileName) ,path(path)
 {
-	HANDLE bmp;
-	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
-	m_data.Attach(bmp);
+	CImage image;
+	image.Load(path);
+
+	m_data.Attach(image.Detach());
 
 	BITMAP bm;
 	m_data.GetBitmap(&bm);
@@ -191,7 +193,7 @@ void CImageBubble::onRClickedSave(HWND& m_hWnd)
 }
 void CImageBubble::onRClickedSaveAs(HWND& m_hWnd)
 {
-	CString szFilter = L"Image (*.bmp) | *.bmp; | All Files(*.*)|*.*||";
+	CString szFilter = L"Bitmap (*.bmp)|*.bmp|JEPG (*.jpg)|*.jpg|PNG (*.png)|*.png|All Files(*.*)|*.*||";
 	CFileDialog dlg(false,L"",L"",OFN_HIDEREADONLY,szFilter);
 	if(dlg.DoModal() == IDOK)
 	{
