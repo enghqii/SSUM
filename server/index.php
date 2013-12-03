@@ -98,7 +98,7 @@
 			$sender = $_POST['sender'];
 			$receiver = $_POST['receiver'];
 			$message = $_POST['message'];
-			$is_binary = true;
+			$is_binary = $_POST['is_binary'];
 			$file_name = NULL;
 			$datums = NULL;
 
@@ -107,13 +107,13 @@
 			if($is_binary == "true" && isset($_FILES['datums']) == true){
 
 				$file_name = $_FILES['datums']['name'];
-				$datums = mysql_real_escape_string(file_get_contents($_FILES['datums']['tmp_name']));
+				$datums = '0x'.bin2hex((file_get_contents($_FILES['datums']['tmp_name'])));
 
-				$query = "INSERT INTO messages (sender, receiver, message, is_binary, file_name, datums) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}', '{$file_name}','{$datums}');";
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary, file_name, datums) VALUES ('{$sender}', '{$receiver}', '{$message}', 1, '{$file_name}', {$datums});";
 			
 			}else{
 
-				$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}');";
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', 0);";
 			}
 
 			$res = mysqli_query($conn,$query);
@@ -132,13 +132,20 @@
 			$receiver = $_POST['receiver'];
 			$lastTime = $_POST['lastTime'];
 
-			$query = "SELECT * FROM messages WHERE ( ( sender = '{$sender}' OR sender = '{$receiver}' ) AND ( receiver = '{$sender}' OR receiver = '{$receiver}' ) ) AND time > '{$lastTime}'";
+			$query = "SELECT * FROM messages WHERE ( ( sender = '{$sender}' OR sender = '{$receiver}' ) AND ( receiver = '{$sender}' OR receiver = '{$receiver}' ) ) AND time >= '{$lastTime}' ORDER BY time DESC LIMIT 50";
 			$res = mysqli_query($conn,$query);
 
 			$msg_list = array();
 			$i = 0;
 
+			//$timeStamp = date("Y-m-d H:i:s");
+
 			while($row = mysqli_fetch_array($res)){
+
+				//if($i == 0){ // when initial
+				//	$timeStamp = $row['time'];
+				//}
+
 				$msg_list[$i] = $row;
 				$msg_list[$i][6] = base64_encode($msg_list[$i][6]);
 				$msg_list[$i]['datums'] = base64_encode($msg_list[$i]['datums']);

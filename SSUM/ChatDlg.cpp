@@ -44,6 +44,7 @@ void CChatDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CChatDlg, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &CChatDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON1, &CChatDlg::OnBnClickedButton1)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -164,8 +165,8 @@ void CChatDlg::RequestSendMsg(){
 	CStringA message(m_message);
 	UpdateData(false);
 
-	//std::vector<byte> buf;
-	//FCFileEx::Read (_T("c:\\asdf.jpg"), buf) ;
+	std::vector<byte> buf;
+	FCFileEx::Read (_T("hjkl.jpg"), buf) ;
 	
 	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = URL ;
@@ -175,7 +176,7 @@ void CChatDlg::RequestSendMsg(){
 	h.AddMultipartFormData("message", message);
 	h.AddMultipartFormData("is_binary", "false");
 	//h.AddMultipartFormData("is_binary", "true"); // TODO
-	//h.AddMultipartFormData("datums", &buf[0], buf.size(), "asdf.jpg") ;
+	//h.AddMultipartFormData("datums", &buf[0], buf.size(), "hjkl.jpg") ;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }
@@ -210,4 +211,22 @@ void CChatDlg::OnBnClickedButton1()
 void CChatDlg::OnBnClickedButton2()
 {
 	RequestUpdateMsg();
+}
+
+
+void CChatDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	RequestUpdateMsg();
+
+	__super::OnTimer(nIDEvent);
+}
+
+
+void CChatDlg::OnInitialUpdate()
+{
+	__super::OnInitialUpdate();
+
+	SetTimer(0,1000,NULL);
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 }
