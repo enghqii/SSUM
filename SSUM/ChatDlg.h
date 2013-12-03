@@ -2,9 +2,12 @@
 
 #include "../http-request/lib/http_request_manager.h"
 
+#include "afxcoll.h"
+
 class ChatData{
 public :
-	ChatData(){}
+	ChatData():binary(NULL){
+	}
 
 	CString sender;
 	CString receiver;
@@ -55,6 +58,11 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton1();
 	CString m_message;
+	virtual void OnInitialUpdate();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnMenuFrientlist();
+	CObArray bubble;
+	virtual void OnDraw(CDC* /*pDC*/);
 };
 
 

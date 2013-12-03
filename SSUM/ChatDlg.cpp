@@ -11,6 +11,11 @@
 #include "file.h"
 #include "base64.h"
 
+#include "Bubble.h"
+#include "BinaryBubble.h"
+#include "ImageBubble.h"
+#include "StringBubble.h"
+
 const char URL[] = "http://125.209.197.196/index.php";
 
 // CChatDlg
@@ -44,6 +49,8 @@ void CChatDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CChatDlg, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON2, &CChatDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON1, &CChatDlg::OnBnClickedButton1)
+	ON_WM_TIMER()
+	ON_COMMAND(ID_MENU_FRIENTLIST, &CChatDlg::OnMenuFrientlist)
 END_MESSAGE_MAP()
 
 
@@ -98,7 +105,7 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 			this->lastTime = doc["lastTime"].GetString();
 
-			int nTalk = doc["numberOfTalk"].GetInt();
+			nTalk = doc["numberOfTalk"].GetInt();
 			pchatData = new ChatData[nTalk];
 
 			for(int i=0;i<nTalk;i++){
@@ -120,39 +127,34 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 					memcpy(pchatData[i].binary, decoded.c_str(), decoded.size());
 					Sleep(0);
 				}
+				Sleep(0);
 			}
-
-			// remove this block
+			for(int i=nTalk-1;i>=0;i--)
 			{
-				std::string cummulativList = "==";
-				CT2CA pszConvertedAnsiString(CUserInfo::shared_info()->getTargetID());
-				std::string s(pszConvertedAnsiString);
-				cummulativList += s;
-				cummulativList += " \n";
-
-				for(int i=0;i<nTalk;i++){
-					cummulativList += " \n";
-					
-					if(pchatData[i].sender == CUserInfo::shared_info()->getID()){
-						cummulativList += ">";
-					}else{
-						cummulativList += "*";
-					}
-					
-					CT2CA _(pchatData[i].message);
-					std::string __(_);
-					cummulativList += __;
+				CBubble *bub;
+				if(pchatData[i].is_binary)
+				{
+					continue;
 				}
-				cummulativList += lastTime;
-
-				SetDlgItemText(IDC_DUMMYSTATIC,CString(cummulativList.c_str()));
+				else
+				{
+					if(pchatData[i].sender == CUserInfo::shared_info()->getID())
+					{
+						bub = new CStringBubble(pchatData[i].message,CB_RIGHT);
+					}
+					else
+					{
+						bub = new CStringBubble(pchatData[i].message,CB_LEFT);
+					}
+				}
+				bubble.Add(bub);
 			}
-			// remove this block
 		}
 	}else{
 		AfxMessageBox(L"received wrong data.");
 		// parse failed
 	}
+	Invalidate();
 }
 
 void CChatDlg::RequestSendMsg(){
@@ -204,10 +206,65 @@ void CChatDlg::RequestUpdateMsg(){
 void CChatDlg::OnBnClickedButton1()
 {
 	RequestSendMsg();
+	m_message = L"";
 }
 
 /// dummy button
 void CChatDlg::OnBnClickedButton2()
 {
 	RequestUpdateMsg();
+}
+
+
+void CChatDlg::OnInitialUpdate()
+{
+	__super::OnInitialUpdate();
+	OnTimer(1);
+	SetTimer(1,1000,NULL);
+	SetDlgItemText(IDC_NAME,CUserInfo::shared_info()->getTargetName());
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+}
+
+
+void CChatDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	RequestUpdateMsg();
+	__super::OnTimer(nIDEvent);
+}
+
+
+void CChatDlg::OnMenuFrientlist()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+}
+
+
+void CChatDlg::OnDraw(CDC* pDC)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	int bubSize = bubble.GetSize();
+	if(bubSize)
+	{
+		int pos=bubSize-1;
+		CBubble *cur = reinterpret_cast<CBubble *>(this->bubble[pos--]);
+		CBubble *next = reinterpret_cast<CBubble *>(this->bubble[pos--]);
+		cur->setPosition(200);
+		for(;pos>=0;pos--)
+		{
+			int h = cur->getNextPosition();
+			next->setPosition(h);
+			cur = next;
+			next = reinterpret_cast<CBubble *>(this->bubble[pos]);
+		}
+		int h = cur->getNextPosition();
+		next->setPosition(h);
+
+		for(int i=bubSize-1;i>=0;i--)
+		{
+			cur = reinterpret_cast<CBubble *>(this->bubble[i]);
+			cur->onDraw(pDC);
+		}
+	}
 }

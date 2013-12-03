@@ -32,6 +32,8 @@ CCRDlg::~CCRDlg()
 void CCRDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST, m_List);
+	DDX_Control(pDX, IDC_COMBO, m_Combo);
 }
 
 BEGIN_MESSAGE_MAP(CCRDlg, CFormView)
@@ -41,6 +43,8 @@ BEGIN_MESSAGE_MAP(CCRDlg, CFormView)
 	ON_BN_CLICKED(IDC_CHAT1, &CCRDlg::OnBnClickedChat1)
 	ON_BN_CLICKED(IDC_CHAT2, &CCRDlg::OnBnClickedChat2)
 	ON_BN_CLICKED(IDC_CHAT3, &CCRDlg::OnBnClickedChat3)
+	ON_WM_TIMER()
+	ON_LBN_DBLCLK(IDC_LIST, &CCRDlg::OnLbnDblclkList)
 END_MESSAGE_MAP()
 
 
@@ -94,28 +98,16 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				pstrFriendsID[i] = doc["friendsID"][i].GetString();
 			}
 
-			/*{
-				std::string cummulativList = "";
-				
-				cummulativList += "Hello, ";
-				CT2CA pszConvertedAnsiString(CUserInfo::shared_info()->getName());
-				std::string s(pszConvertedAnsiString);
-				cummulativList += s;
-				cummulativList += " ( id = ";
-				CT2CA pszConvertedAnsiString1(CUserInfo::shared_info()->getID());
-				std::string s1(pszConvertedAnsiString1);
-				cummulativList += s1;
-				cummulativList += " ) ";
-				
-				cummulativList += " \n\n*friend List*\n";
+			//
+			m_List.ResetContent();
+			m_Combo.ResetContent();
+			for(int i=0;i<nFriends;i++)
+			{
+				CString temp(pstrFriends[i].c_str());
+				m_List.AddString(temp);
+				m_Combo.AddString(temp);
+			}
 
-				for(int i=0;i<nFriends;i++){
-					cummulativList += (pstrFriends[i]);
-					cummulativList += " \n";
-				}
-
-				SetDlgItemText(IDC_FRIEND_LIST,CString(cummulativList.c_str()));
-			}/* TODO remove this block*/
 		}
 	}else{
 		AfxMessageBox(L"received wrong data.");
@@ -173,6 +165,51 @@ void CCRDlg::OnBnClickedChat3()
 {
 	CUserInfo::shared_info()->setTargetName(CString(pstrFriends[2].c_str()));
 	CUserInfo::shared_info()->setTargetID(CString(pstrFriendsID[2].c_str()));
+	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
+	pMain->Set_View(IDD_CHATDLG);
+}
+
+
+void CCRDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	// TODO : 친구 목록 얻어오는 리퀘스트 보내기
+	
+	CStringA id(CUserInfo::shared_info()->getID());
+	
+	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
+	h.m_url = URL ;
+	h.AddMultipartFormData("tag", "GET_FRIEND_LIST");
+	h.AddMultipartFormData("id", id) ;
+	h.EndMultipartFormData();
+	this->AddRequest(h);
+	__super::OnTimer(nIDEvent);
+}
+
+
+void CCRDlg::OnInitialUpdate()
+{
+	__super::OnInitialUpdate();
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	OnTimer(0);
+	SetTimer(0,100000,NULL);
+
+	
+}
+
+
+void CCRDlg::OnDraw(CDC* /*pDC*/)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+}
+
+
+void CCRDlg::OnLbnDblclkList()
+{
+	int cur = m_List.GetCurSel();
+	CUserInfo::shared_info()->setTargetName(CString(pstrFriends[cur].c_str()));
+	CUserInfo::shared_info()->setTargetID(CString(pstrFriendsID[cur].c_str()));
+
 	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 	pMain->Set_View(IDD_CHATDLG);
 }

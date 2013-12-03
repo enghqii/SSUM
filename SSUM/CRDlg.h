@@ -46,6 +46,12 @@ public:
 	afx_msg void OnBnClickedChat1();
 	afx_msg void OnBnClickedChat2();
 	afx_msg void OnBnClickedChat3();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	virtual void OnInitialUpdate();
+	virtual void OnDraw(CDC* /*pDC*/);
+	CListBox m_List;
+	CComboBox m_Combo;
+	afx_msg void OnLbnDblclkList();
 };
 
 

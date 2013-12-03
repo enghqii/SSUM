@@ -111,6 +111,10 @@
     <None Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\BinaryBubble.h" />
+    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\Bubble.h" />
+    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\ImageBubble.h" />
+    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\StringBubble.h" />
     <ClInclude Include="..\http-request\lib\http_request.h" />
     <ClInclude Include="..\http-request\lib\http_request_manager.h" />
     <ClInclude Include="..\rapidjson\document.h" />
@@ -137,6 +141,10 @@
     <ClInclude Include="UserInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\BinaryBubble.cpp" />
+    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\Bubble.cpp" />
+    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\ImageBubble.cpp" />
+    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\StringBubble.cpp" />
     <ClCompile Include="base64.cpp" />
     <ClCompile Include="ChatDlg.cpp" />
     <ClCompile Include="CRDlg.cpp" />
