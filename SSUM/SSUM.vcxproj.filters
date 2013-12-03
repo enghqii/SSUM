@@ -55,6 +55,9 @@
     <None Include="..\http-request\lib\http_response_info.inl">
       <Filter>http_request</Filter>
     </None>
+    <None Include="ssum bg.bmp">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SSUM.h">

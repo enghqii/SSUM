@@ -36,6 +36,7 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 		ON_WM_RBUTTONUP()
 		ON_BN_CLICKED(IDC_BUTTON2, &CSSUMView::OnBnClickedButton2)
 		ON_BN_CLICKED(IDC_BUTTON1, &CSSUMView::OnBnClickedButton1)
+//		ON_WM_KEYDOWN()
 	END_MESSAGE_MAP()
 
 	// CSSUMView 생성/소멸
@@ -142,7 +143,7 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 					CUserInfo::shared_info()->setName(m_NAME);
 					CUserInfo::shared_info()->setID(m_ID);
 
-					AfxMessageBox(L"login SUCCESSFUL");
+					//AfxMessageBox(L"login SUCCESSFUL");
 					this->onLoginSuccess();
 
 				}else{
@@ -222,3 +223,38 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 		h.EndMultipartFormData();
 		this->AddRequest(h);
 	}
+
+	void CSSUMView::OnDraw(CDC* pDC)
+	{
+		// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	CRect rect;
+	GetClientRect(&rect);
+
+	CBitmap back;
+	back.LoadBitmapW(IDB_BITMAP1);
+
+	CDC memDC;
+	memDC.CreateCompatibleDC(pDC);
+	CBitmap *pOldBitmap = memDC.SelectObject(&back);
+
+	BITMAP bm;
+	back.GetBitmap(&bm);
+
+	pDC->StretchBlt(0,0,
+		rect.Width(),rect.Height(),
+		&memDC,0,0,bm.bmWidth,bm.bmHeight,
+		SRCCOPY);
+
+	memDC.SelectObject(pOldBitmap);
+	}
+
+
+//	void CSSUMView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+//	{
+//		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+//		if(nChar == VK_RETURN)
+//		{
+//			OnBnClickedButton1();
+//		}
+//		__super::OnKeyDown(nChar, nRepCnt, nFlags);
+//	}

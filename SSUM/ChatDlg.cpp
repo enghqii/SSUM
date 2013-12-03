@@ -180,12 +180,10 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 						if(pchatData[i].sender == CUserInfo::shared_info()->getID())
 						{
 							bub = new CImageBubble(pchatData[i].file_name,pchatData[i].path,CB_RIGHT);
-							bub->onRClickedSave(m_hWnd);
 						}
 						else
 						{
 							bub = new CImageBubble(pchatData[i].file_name,pchatData[i].path,CB_LEFT);
-							bub->onRClickedSave(m_hWnd);
 						}
 					}
 					else
@@ -193,12 +191,10 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 						if(pchatData[i].sender == CUserInfo::shared_info()->getID())
 						{
 							bub = new CBinaryBubble(pchatData[i].file_name,pchatData[i].path,CB_RIGHT);
-							bub->onRClickedSave(m_hWnd);
 						}
 						else
 						{
 							bub = new CBinaryBubble(pchatData[i].file_name,pchatData[i].path,CB_LEFT);
-							bub->onRClickedSave(m_hWnd);
 						}
 					}
 				}
@@ -226,12 +222,13 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 					SCROLLINFO scrinfo;
 					scrinfo.cbSize = sizeof(scrinfo);
 					scrinfo.fMask = SIF_ALL;
-					scrinfo.nMin =240;          // 최소값
+					scrinfo.nMin = 330-10;          // 최소값
 					scrinfo.nMax = nMax;      // 최대값
-					scrinfo.nPage = 10;      // 페이지단위 증가값
+					scrinfo.nPage = 20;      // 페이지단위 증가값
 					scrinfo.nTrackPos = 0;  // 트랙바가 움직일때의 위치값
 					scrinfo.nPos = nMax;        // 위치
 					m_scroll.SetScrollInfo(&scrinfo);
+					Invalidate();
 				}
 			}
 		}
@@ -239,7 +236,6 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 		AfxMessageBox(L"received wrong data.");
 		// parse failed
 	}
-	Invalidate();
 }
 
 void CChatDlg::RequestSendMsg(){
@@ -380,6 +376,40 @@ void CChatDlg::OnMenuFrientlist()
 void CChatDlg::OnDraw(CDC* pDC)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	CRect rect;
+	GetClientRect(&rect);
+
+	// 메모리 DC 선언
+	CDC memDC;
+	CBitmap *pOldBitmap, bitmap;
+
+	// 화면 DC와 호환되는 메모리 DC 객체를 생성
+	memDC.CreateCompatibleDC(pDC);
+
+	// 마찬가지로 화면 DC와 호환되는 Bitmap 생성
+	bitmap.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
+	pOldBitmap = memDC.SelectObject(&bitmap);
+
+	//print back ground to memDC
+	CBitmap back;
+	back.LoadBitmapW(IDB_BITMAP1);
+
+	CDC bkDC;
+	bkDC.CreateCompatibleDC(&memDC);
+	CBitmap *pOldbkBitmap = bkDC.SelectObject(&back);
+
+	BITMAP bm;
+	back.GetBitmap(&bm);
+
+	memDC.StretchBlt(0,0,
+		rect.Width(),rect.Height(),
+		&bkDC,0,0,bm.bmWidth,bm.bmHeight,
+		SRCCOPY);
+
+	bkDC.SelectObject(pOldbkBitmap);
+
+	//print bubble to memDC
 	int bubSize = bubble.GetSize();
 	if(bubSize)
 	{
@@ -390,9 +420,16 @@ void CChatDlg::OnDraw(CDC* pDC)
 		for(int i=stIndex;i>=endIndex;i--)
 		{
 			CBubble* cur = reinterpret_cast<CBubble *>(this->bubble[i]);
-			cur->onDraw(pDC);
+			cur->onDraw(&memDC);
 		}
 	}
+
+	//print mDC to pDC
+	pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &memDC, 0, 0, SRCCOPY);
+
+	memDC.SelectObject(pOldBitmap);
+	memDC.DeleteDC();
+	bitmap.DeleteObject();
 }
 
 
@@ -409,12 +446,12 @@ void CChatDlg::SetPosition(void)
 		SCROLLINFO  scrinfo;
 		pScrollBar->GetScrollInfo(&scrinfo);
 
-		cur->setPosition(250+(scrinfo.nMax-scrinfo.nPos));
+		cur->setPosition(330+(scrinfo.nMax-scrinfo.nPos));
 		int h;
 		while(1)
 		{
 			h = cur->getNextPosition();
-			if(pos < 0 || h < 250)
+			if(pos < 0 || h < 330)
 			{
 				stIndex = pos+1;
 				break;
@@ -585,9 +622,9 @@ void CChatDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	newPoint.y = point.y - winRect.top;
 	np = newPoint;
 
-	if(point.y < 250)
+	if(newPoint.y > 380)
 	{
-		theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+		//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 	}
 	else
 	{

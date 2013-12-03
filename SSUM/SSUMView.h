@@ -60,6 +60,9 @@ private:
 	void onLoginSuccess();
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
+	virtual void OnDraw(CDC* /*pDC*/);
+public:
+//	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // SSUMView.cpp의 디버그 버전

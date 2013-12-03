@@ -108,6 +108,7 @@
     <None Include="res\SSUMDoc.ico" />
     <None Include="res\Toolbar.bmp" />
     <None Include="res\Toolbar256.bmp" />
+    <None Include="ssum bg.bmp" />
     <None Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>

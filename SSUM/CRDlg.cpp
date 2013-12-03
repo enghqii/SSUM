@@ -191,13 +191,35 @@ void CCRDlg::OnInitialUpdate()
 	OnTimer(0);
 	SetTimer(0,100000,NULL);
 
-	
+	CString tt;
+	tt = L"Hello, ";
+	tt += CUserInfo::shared_info()->getName();
+	SetDlgItemText(IDC_NAME,tt);
 }
 
 
-void CCRDlg::OnDraw(CDC* /*pDC*/)
+void CCRDlg::OnDraw(CDC* pDC)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	CRect rect;
+	GetClientRect(&rect);
+
+	CBitmap back;
+	back.LoadBitmapW(IDB_BITMAP1);
+
+	CDC memDC;
+	memDC.CreateCompatibleDC(pDC);
+	CBitmap *pOldBitmap = memDC.SelectObject(&back);
+
+	BITMAP bm;
+	back.GetBitmap(&bm);
+
+	pDC->StretchBlt(0,0,
+		rect.Width(),rect.Height(),
+		&memDC,0,0,bm.bmWidth,bm.bmHeight,
+		SRCCOPY);
+
+	memDC.SelectObject(pOldBitmap);
 }
 
 
