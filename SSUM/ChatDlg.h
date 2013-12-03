@@ -10,6 +10,7 @@ public :
 	CString receiver;
 	CString message;
 	bool is_binary;
+	CString file_name;
 	BYTE * binary;
 };
 

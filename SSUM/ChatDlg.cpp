@@ -109,11 +109,15 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 				if(pchatData[i].is_binary == true){
 
+					// saving file_name;
+					pchatData[i].file_name = doc["talk"][i]["file_name"].GetString();
+
 					// TODO : decode binaries;
 					std::string datums = doc["talk"][i]["datums"].GetString();
-					std::string file_name = doc["talk"][i]["file_name"].GetString();
 					std::string decoded = base64_decode(datums);
-					decoded.c_str();
+
+					pchatData[i].binary = new BYTE[decoded.size()];
+					memcpy(pchatData[i].binary, decoded.c_str(), decoded.size());
 					Sleep(0);
 				}
 			}
