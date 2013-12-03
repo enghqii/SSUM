@@ -207,7 +207,6 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 	//Login button handler
 	void CSSUMView::OnBnClickedButton1()
 	{
-		// http request를 날려야함.
 		UpdateData(true);
 
 		CStringA id(m_ID);

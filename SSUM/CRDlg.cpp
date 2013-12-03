@@ -85,7 +85,7 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 		// and dispatch here
 		if(tag.compare("GET_FRIEND_LIST") == 0){
 
-			int nFriends = doc["numberOfFriends"].GetInt();
+			nFriends = doc["numberOfFriends"].GetInt();
 			pstrFriends = new std::string[nFriends];
 			pstrFriendsID = new std::string[nFriends];
 
