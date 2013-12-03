@@ -159,3 +159,6 @@ void CStringBubble::onRClickedSave(HWND& m_hWnd)
 void CStringBubble::onRClickedSaveAs(HWND& m_hWnd)
 {
 }
+void CStringBubble::deletetempfile()
+{
+}

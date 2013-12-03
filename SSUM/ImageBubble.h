@@ -19,6 +19,7 @@ public:
 	void onRClickedView(HWND& m_hWnd);
 	void onRClickedSave(HWND& m_hWnd);
 	void onRClickedSaveAs(HWND& m_hWnd);
+	void deletetempfile();
 };
 
 

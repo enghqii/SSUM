@@ -24,7 +24,7 @@ const char URL[] = "http://125.209.197.196/index.php";
 IMPLEMENT_DYNCREATE(CChatDlg, CFormView)
 
 CChatDlg::CChatDlg()
-: CFormView(CChatDlg::IDD) ,stIndex(0),endIndex(0)
+: CFormView(CChatDlg::IDD) ,stIndex(0),endIndex(0),tnum(0)
 {
 	m_message = _T("");
 	
@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(CChatDlg, CFormView)
 	ON_COMMAND(ID_CHATPOPUP_SAVE, &CChatDlg::OnChatpopupSave)
 	ON_COMMAND(ID_CHATPOPUP_SAVEAS, &CChatDlg::OnChatpopupSaveas)
 	ON_BN_CLICKED(IDC_FILE, &CChatDlg::OnBnClickedFile)
+ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -138,10 +139,10 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 					pchatData[i].binary = new BYTE[decoded.size()];
 					memcpy(pchatData[i].binary, decoded.c_str(), decoded.size());
 
-					CString str;
 					CString strName;
-					GetTempPath(MAX_PATH,str.GetBuffer(MAX_PATH));
-					strName = str + pchatData[i].file_name;
+					strName.Format(L"T_%d",tnum++);
+					strName +=pchatData[i].file_name;
+
 					pchatData[i].path = strName;
 					CFile fp;
 					CFileException e;
@@ -368,6 +369,13 @@ void CChatDlg::OnTimer(UINT_PTR nIDEvent)
 void CChatDlg::OnMenuFrientlist()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	int size = bubble.GetSize();
+	for(int i=0;i<size;i++)
+	{
+		CBubble* cur = reinterpret_cast<CBubble *>(this->bubble[i]);
+		cur->deletetempfile();		
+	}
+
 	CMainFrame *pMain=(CMainFrame *)AfxGetMainWnd();
 	pMain->Set_View(IDD_CRDLG);
 }
@@ -487,7 +495,7 @@ void CChatDlg::OnNMThemeChangedScrollbar1(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	*pResult = 0;
 
-	Invalidate();
+	//Invalidate();
 }
 
 
@@ -524,6 +532,7 @@ void CChatDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 				}
 				// 스크롤바의 위치를 변경한다.
 				pScrollBar->SetScrollPos(scrinfo.nPos);
+				Invalidate(FALSE);
 			}
 		}
 	}
@@ -550,7 +559,6 @@ void CChatDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			break;
 			}
 		}
-		Invalidate();
 		//CFormView::OnVScroll(nSBCode, nPos, pScrollBar);
 	__super::OnVScroll(nSBCode, nPos, pScrollBar);
 }
@@ -572,7 +580,7 @@ BOOL CChatDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		scrinfo.nPos += scrinfo.nPage;
 	}
 	pScrollBar->SetScrollPos(scrinfo.nPos);
-	Invalidate();
+	Invalidate(FALSE);
 	return __super::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -702,4 +710,16 @@ void CChatDlg::OnBnClickedFile()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	RequestSendFile();
+}
+
+void CChatDlg::OnDestroy()
+{
+	__super::OnDestroy();
+	int size = bubble.GetSize();
+	for(int i=0;i<size;i++)
+	{
+		 CBubble* cur = reinterpret_cast<CBubble *>(this->bubble[i]);
+		 cur->deletetempfile();		
+	}
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

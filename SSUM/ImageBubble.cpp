@@ -127,6 +127,7 @@ void CImageBubble::onDraw(CDC* pDC)
 }
 void CImageBubble::onLClicked(HWND& m_hWnd)
 {
+	//AfxMessageBox(path);
 	if((HINSTANCE)32 > ShellExecute(m_hWnd,L"open",path,NULL,NULL,SW_SHOW))
 	{
 		OPENASINFO oai;
@@ -241,4 +242,8 @@ void CImageBubble::onRClickedSaveAs(HWND& m_hWnd)
 		//image.Attach(bitmap);
 		//image.Save(strPathName,Gdiplus::ImageFormatBMP);
 	}
+}
+void CImageBubble::deletetempfile()
+{
+	::DeleteFile(path);
 }

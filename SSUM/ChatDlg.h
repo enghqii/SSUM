@@ -79,6 +79,8 @@ public:
 	afx_msg void OnChatpopupSave();
 	afx_msg void OnChatpopupSaveas();
 	afx_msg void OnBnClickedFile();
+	int tnum;
+	afx_msg void OnDestroy();
 };
 
 

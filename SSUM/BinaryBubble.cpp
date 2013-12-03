@@ -254,3 +254,7 @@ void CBinaryBubble::onRClickedSaveAs(HWND& m_hWnd)
 		save.Close();
 	}
 }
+void CBinaryBubble::deletetempfile()
+{
+	::DeleteFile(path);
+}

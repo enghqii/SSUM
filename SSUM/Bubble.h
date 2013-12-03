@@ -23,6 +23,7 @@ public:
 	virtual void onRClickedView(HWND& m_hWnd)=0;
 	virtual void onRClickedSave(HWND& m_hWnd)=0;
 	virtual void onRClickedSaveAs(HWND& m_hWnd)=0;
+	virtual void deletetempfile()=0;
 	int getHeight();
 	void setPosition(int y);
 	int getNextPosition();
