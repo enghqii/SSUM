@@ -20,7 +20,9 @@ public:
 
 	virtual void onDraw(CDC* pDC)=0;
 	virtual void onLClicked(HWND& m_hWnd)=0;
-	virtual void onRClicked()=0;
+	virtual void onRClickedView(HWND& m_hWnd)=0;
+	virtual void onRClickedSave(HWND& m_hWnd)=0;
+	virtual void onRClickedSaveAs(HWND& m_hWnd)=0;
 	int getHeight();
 	void setPosition(int y);
 	int getNextPosition();

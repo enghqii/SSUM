@@ -11,7 +11,7 @@
 CImageBubble::CImageBubble() : CBubble()
 {
 }
-CImageBubble::CImageBubble(CString path) : CBubble(), path(path)
+CImageBubble::CImageBubble(CString fileName,CString path) : CBubble(), fileName(fileName), path(path)
 {
 	HANDLE bmp;
 	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
@@ -30,7 +30,7 @@ CImageBubble::CImageBubble(CString path) : CBubble(), path(path)
 		width = bm.bmWidth+12*2;
 	}
 }
-CImageBubble::CImageBubble(CString path,UINT align) : CBubble(align) ,path(path)
+CImageBubble::CImageBubble(CString fileName,CString path,UINT align) : CBubble(align), fileName(fileName) ,path(path)
 {
 	HANDLE bmp;
 	bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
@@ -135,6 +135,109 @@ void CImageBubble::onLClicked(HWND& m_hWnd)
 		SHOpenWithDialog(m_hWnd,&oai);
 	}	
 }
-void CImageBubble::onRClicked()
+void CImageBubble::onRClickedView(HWND& m_hWnd)
 {
+	if((HINSTANCE)32 > ShellExecute(m_hWnd,L"open",path,NULL,NULL,SW_SHOW))
+	{
+		OPENASINFO oai;
+		oai.pcszFile = path;
+		oai.pcszClass = NULL;
+		oai.oaifInFlags = OAIF_HIDE_REGISTRATION|OAIF_EXEC;
+		SHOpenWithDialog(m_hWnd,&oai);
+	}
+}
+void CImageBubble::onRClickedSave(HWND& m_hWnd)
+{
+	WCHAR my_document[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL,CSIDL_PROFILE,NULL,SHGFP_TYPE_CURRENT,my_document);
+	CString strPathName = L"";
+	strPathName += my_document;
+	strPathName += L"\\Downloads\\";
+	strPathName += fileName;
+
+	CFile fp;
+	CFileException e;
+	if(!fp.Open(strPathName,CFile::modeWrite|CFile::modeCreate|CFile::typeBinary,&e))
+	{
+		e.ReportError();
+		return;
+	}
+	CFile save;
+	if(!save.Open(path,CFile::modeRead|CFile::typeBinary,&e))
+	{
+		e.ReportError();
+		return;
+	}
+
+	UINT nRet =0;
+	char buffer[1024];
+
+	while(1)
+	{
+		ZeroMemory(buffer,sizeof(buffer));
+		nRet = save.Read(buffer,sizeof(buffer));
+		if(nRet == sizeof(buffer))
+		{
+			fp.Write(buffer,sizeof(buffer));
+		}
+		else
+		{
+			fp.Write(buffer,sizeof(buffer));
+			break;
+		}
+	}
+
+	fp.Close();
+	save.Close();
+}
+void CImageBubble::onRClickedSaveAs(HWND& m_hWnd)
+{
+	CString szFilter = L"Image (*.bmp) | *.bmp; | All Files(*.*)|*.*||";
+	CFileDialog dlg(false,L"",L"",OFN_HIDEREADONLY,szFilter);
+	if(dlg.DoModal() == IDOK)
+	{
+		CString strPathName = dlg.GetPathName();
+		CFile fp;
+		CFileException e;
+		if(!fp.Open(strPathName,CFile::modeWrite|CFile::modeCreate|CFile::typeBinary,&e))
+		{
+			e.ReportError();
+			return;
+		}
+		CFile save;
+		if(!save.Open(path,CFile::modeRead|CFile::typeBinary,&e))
+		{
+			e.ReportError();
+			return;
+		}
+
+		UINT nRet =0;
+		char buffer[1024];
+
+		while(1)
+		{
+			ZeroMemory(buffer,sizeof(buffer));
+			nRet = save.Read(buffer,sizeof(buffer));
+			if(nRet == sizeof(buffer))
+			{
+				fp.Write(buffer,sizeof(buffer));
+			}
+			else
+			{
+				fp.Write(buffer,sizeof(buffer));
+				break;
+			}
+		}
+
+		fp.Close();
+		save.Close();
+		//CBitmap bitmap;
+		//HANDLE bmp;
+		//bmp = LoadImage(NULL,path,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
+		//bitmap.Attach(bmp);
+		//
+		//CImage image;
+		//image.Attach(bitmap);
+		//image.Save(strPathName,Gdiplus::ImageFormatBMP);
+	}
 }

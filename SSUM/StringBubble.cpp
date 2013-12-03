@@ -151,7 +151,12 @@ void CStringBubble::onLClicked(HWND& m_hWnd)
 {
 
 }
-void CStringBubble::onRClicked()
+void CStringBubble::onRClickedView(HWND& m_hWnd)
 {
-
+}
+void CStringBubble::onRClickedSave(HWND& m_hWnd)
+{
+}
+void CStringBubble::onRClickedSaveAs(HWND& m_hWnd)
+{
 }

@@ -156,6 +156,101 @@ void CBinaryBubble::onLClicked(HWND& m_hWnd)
 		SHOpenWithDialog(m_hWnd,&oai);
 	}	
 }
-void CBinaryBubble::onRClicked()
+void CBinaryBubble::onRClickedView(HWND& m_hWnd)
 {
+	if((HINSTANCE)32 > ShellExecute(m_hWnd,L"open",path,NULL,NULL,SW_SHOW))
+	{
+		OPENASINFO oai;
+		oai.pcszFile = path;
+		oai.pcszClass = NULL;
+		oai.oaifInFlags = OAIF_HIDE_REGISTRATION|OAIF_EXEC;
+		SHOpenWithDialog(m_hWnd,&oai);
+	}
+}
+void CBinaryBubble::onRClickedSave(HWND& m_hWnd)
+{
+	WCHAR my_document[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL,CSIDL_PROFILE,NULL,SHGFP_TYPE_CURRENT,my_document);
+	CString strPathName = L"";
+	strPathName += my_document;
+	strPathName += L"\\Downloads\\";
+	strPathName += fileName;
+
+	CFile fp;
+	CFileException e;
+	if(!fp.Open(strPathName,CFile::modeWrite|CFile::modeCreate|CFile::typeBinary,&e))
+	{
+		e.ReportError();
+		return;
+	}
+	CFile save;
+	if(!save.Open(path,CFile::modeRead|CFile::typeBinary,&e))
+	{
+		e.ReportError();
+		return;
+	}
+
+	UINT nRet =0;
+	char buffer[1024];
+
+	while(1)
+	{
+		ZeroMemory(buffer,sizeof(buffer));
+		nRet = save.Read(buffer,sizeof(buffer));
+		if(nRet == sizeof(buffer))
+		{
+			fp.Write(buffer,sizeof(buffer));
+		}
+		else
+		{
+			fp.Write(buffer,sizeof(buffer));
+			break;
+		}
+	}
+
+	fp.Close();
+	save.Close();
+}
+void CBinaryBubble::onRClickedSaveAs(HWND& m_hWnd)
+{
+	CString szFilter = L"All Files(*.*)|*.*|";
+	CFileDialog dlg(false,L"",L"",OFN_HIDEREADONLY,szFilter);
+	if(dlg.DoModal() == IDOK)
+	{
+		CString strPathName = dlg.GetPathName();
+		CFile fp;
+		CFileException e;
+		if(!fp.Open(strPathName,CFile::modeWrite|CFile::modeCreate|CFile::typeBinary,&e))
+		{
+			e.ReportError();
+			return;
+		}
+		CFile save;
+		if(!save.Open(path,CFile::modeRead|CFile::typeBinary,&e))
+		{
+			e.ReportError();
+			return;
+		}
+
+		UINT nRet =0;
+		char buffer[1024];
+
+		while(1)
+		{
+			ZeroMemory(buffer,sizeof(buffer));
+			nRet = save.Read(buffer,sizeof(buffer));
+			if(nRet == sizeof(buffer))
+			{
+				fp.Write(buffer,sizeof(buffer));
+			}
+			else
+			{
+				fp.Write(buffer,sizeof(buffer));
+				break;
+			}
+		}
+
+		fp.Close();
+		save.Close();
+	}
 }

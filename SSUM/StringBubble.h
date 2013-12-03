@@ -14,8 +14,9 @@ public:
 	
 	void onDraw(CDC* pDC);
 	void onLClicked(HWND& m_hWnd);
-	void onRClicked();
-
+	void onRClickedView(HWND& m_hWnd);
+	void onRClickedSave(HWND& m_hWnd);
+	void onRClickedSaveAs(HWND& m_hWnd);
 };
 
 

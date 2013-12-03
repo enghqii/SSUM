@@ -7,15 +7,18 @@ class CImageBubble : public CBubble
 private:
 	CBitmap m_data;
 	CString path;
+	CString fileName;
 public:
 	CImageBubble();
-	CImageBubble(CString path);
-	CImageBubble(CString path,UINT align);
+	CImageBubble(CString fileName,CString path);
+	CImageBubble(CString fileName,CString path,UINT align);
 	virtual ~CImageBubble();
 
 	void onDraw(CDC* pDC);
 	void onLClicked(HWND& m_hWnd);
-	void onRClicked();
+	void onRClickedView(HWND& m_hWnd);
+	void onRClickedSave(HWND& m_hWnd);
+	void onRClickedSaveAs(HWND& m_hWnd);
 };
 
 

@@ -20,7 +20,7 @@ CBubble::CBubble(UINT align) : y(0), align(align)
 	}
 	else if(align == CB_RIGHT)
 	{
-		x = 200;
+		x = 280;
 	}
 }
 
