@@ -102,11 +102,10 @@
 			$file_name = NULL;
 			$datums = NULL;
 
-			//if($is_binary == "true")
-			//	$is_bin = true;
 			$query = "";
 
 			if($is_binary == "true" && isset($_FILES['datums']) == true){
+
 				$file_name = $_FILES['datums']['name'];
 				$datums = mysql_real_escape_string(file_get_contents($_FILES['datums']['tmp_name']));
 
@@ -141,7 +140,7 @@
 
 			while($row = mysqli_fetch_array($res)){
 				$msg_list[$i] = $row;
-				$msg_list[$i][5] = base64_encode($msg_list[$i][5]);
+				$msg_list[$i][6] = base64_encode($msg_list[$i][6]);
 				$msg_list[$i]['datums'] = base64_encode($msg_list[$i]['datums']);
 				$i++;
 			}
