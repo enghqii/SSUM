@@ -15,6 +15,7 @@ public :
 	bool is_binary;
 	CString file_name;
 	BYTE * binary;
+	CString path;
 };
 
 

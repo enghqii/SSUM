@@ -125,6 +125,24 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 					pchatData[i].binary = new BYTE[decoded.size()];
 					memcpy(pchatData[i].binary, decoded.c_str(), decoded.size());
+
+					CString str;
+					CString strName;
+					GetTempPath(MAX_PATH,str.GetBuffer(MAX_PATH));
+					GetTempFileName(str,L"T_",0,strName.GetBuffer(MAX_PATH));
+					pchatData[i].path = strName;
+					CFile fp;
+					CFileException e;
+					if(!fp.Open(strName,CFile::modeWrite|CFile::modeCreate|CFile::typeBinary,&e))
+					{
+						e.ReportError();
+						return;
+					}
+
+					fp.Write(pchatData[i].binary,decoded.size());
+
+					fp.Close();
+
 					Sleep(0);
 				}
 				Sleep(0);
@@ -133,8 +151,29 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 			{
 				CBubble *bub;
 				if(pchatData[i].is_binary)
-				{
-					continue;
+				{					
+					int count =0;
+					int length = pchatData[i].file_name.GetLength();
+					for(int j=0;j<length;j++)
+					{
+						if(pchatData[i].file_name[j] == '.')
+						{
+							count++;
+						}
+					}
+					CString ext;
+					AfxExtractSubString(ext,pchatData[i].file_name,'.');
+					//if(ext == L"bmp" || ext == L"jpg" || ext == L"png")
+					{
+						if(pchatData[i].sender == CUserInfo::shared_info()->getID())
+						{
+							bub = new CImageBubble(pchatData[i].file_name,pchatData[i].path,CB_RIGHT);
+						}
+						else
+						{
+							bub = new CImageBubble(pchatData[i].file_name,pchatData[i].path,CB_LEFT);
+						}
+					}
 				}
 				else
 				{
