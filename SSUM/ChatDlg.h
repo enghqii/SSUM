@@ -36,6 +36,8 @@ public:
 // custom
 private:
 
+	std::string lastTime;
+
 	int nTalk;
 	ChatData* pchatData;
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);

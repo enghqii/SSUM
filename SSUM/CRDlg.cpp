@@ -118,6 +118,9 @@ void CCRDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				SetDlgItemText(IDC_FRIEND_LIST,CString(cummulativList.c_str()));
 			}/* TODO remove this block*/
 		}
+	}else{
+		AfxMessageBox(L"received wrong data.");
+		// parse failed
 	}
 }
 

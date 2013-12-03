@@ -21,10 +21,18 @@ CChatDlg::CChatDlg()
 	: CFormView(CChatDlg::IDD)
 {
 	m_message = _T("");
+	
+	lastTime = "2013-01-01 00:00:00"; // get all
+
+	nTalk = 0;
+	pchatData = NULL;
 }
 
 CChatDlg::~CChatDlg()
 {
+	if(pchatData != NULL){
+		delete [] pchatData;
+	}
 }
 
 void CChatDlg::DoDataExchange(CDataExchange* pDX)
@@ -85,8 +93,11 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 			}else{
 				AfxMessageBox(_T("SEND_MSG failed"));
 			}
+
 		}else if(tag.compare("UPDATE_MSG") == 0){
-			
+
+			this->lastTime = doc["lastTime"].GetString();
+
 			int nTalk = doc["numberOfTalk"].GetInt();
 			pchatData = new ChatData[nTalk];
 
@@ -128,11 +139,15 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 					std::string __(_);
 					cummulativList += __;
 				}
+				cummulativList += lastTime;
 
 				SetDlgItemText(IDC_DUMMYSTATIC,CString(cummulativList.c_str()));
 			}
 			// remove this block
 		}
+	}else{
+		AfxMessageBox(L"received wrong data.");
+		// parse failed
 	}
 }
 
@@ -174,7 +189,7 @@ void CChatDlg::RequestUpdateMsg(){
 	h.AddMultipartFormData("tag", "UPDATE_MSG");
 	h.AddMultipartFormData("sender", sender);
 	h.AddMultipartFormData("receiver", receiver);
-	h.AddMultipartFormData("lastTime", "2013-01-01 00:00:00"); // TODO update this value;
+	h.AddMultipartFormData("lastTime", lastTime.c_str()); // TODO update this value;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }

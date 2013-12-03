@@ -145,7 +145,7 @@
 				$i++;
 			}
 
-			$response = array("tag" => "UPDATE_MSG", "numberOfTalk" => $i, "talk"=> $msg_list);
+			$response = array("tag" => "UPDATE_MSG","lastTime" => date("Y-m-d H:i:s"), "numberOfTalk" => $i, "talk"=> $msg_list);
 
 			//print_r($msg_list);
 

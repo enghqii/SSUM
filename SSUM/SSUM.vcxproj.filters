@@ -19,6 +19,12 @@
     <Filter Include="rapidjson">
       <UniqueIdentifier>{2f619a86-5da3-438a-babc-21dfca999544}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base64">
+      <UniqueIdentifier>{0b122c79-e758-4354-baab-64a66615a065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="file">
+      <UniqueIdentifier>{ed2b729b-ac47-4b63-aca7-9488314101e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -117,11 +123,11 @@
     <ClInclude Include="ChatDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="file.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="base64.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>base64</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>file</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +165,7 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="base64.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>base64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

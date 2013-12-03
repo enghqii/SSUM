@@ -75,6 +75,7 @@
 4.3 메세지 업데이트 응답
 {
 	"tag": "UPDATE_MSG,
+	"lastTime" : "2013-01-01 00:00:00",
 	"numberOfTalk" : <n>,
 	"talk": [{talk1},{talk2},{talk3}]
 }
