@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP(CChatDlg, CFormView)
 	ON_COMMAND(ID_CHATPOPUP_VIEW, &CChatDlg::OnChatpopupView)
 	ON_COMMAND(ID_CHATPOPUP_SAVE, &CChatDlg::OnChatpopupSave)
 	ON_COMMAND(ID_CHATPOPUP_SAVEAS, &CChatDlg::OnChatpopupSaveas)
+	ON_BN_CLICKED(IDC_FILE, &CChatDlg::OnBnClickedFile)
 END_MESSAGE_MAP()
 
 
@@ -266,6 +267,40 @@ void CChatDlg::RequestSendMsg(){
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }
+void CChatDlg::RequestSendFile(){
+	UpdateData(true);
+	CStringA id(CUserInfo::shared_info()->getID());
+	CStringA sender(CUserInfo::shared_info()->getID());
+	CStringA receiver(CUserInfo::shared_info()->getTargetID());
+	CStringA message(m_message);
+	m_message = L"";
+	UpdateData(false);
+	CString szFilter = L"Bitmap (*.bmp)|*.bmp|JEPG (*.jpg)|*.jpg|PNG (*.png)|*.png|PDF (*.pdf)|*.pdf|Word (*.doc;*.docx;)|*.doc;*.docx;|PowerPoint (*.ppt;*.pptx;)|*.ppt;*.pptx;|All Files(*.*)|*.*||";
+	CFileDialog dlg(true,L"",L"",OFN_HIDEREADONLY,szFilter);
+	CString strPathName;
+	CString strfilename;
+	if(dlg.DoModal() == IDOK)
+	{
+		strPathName = dlg.GetPathName();
+		strfilename = dlg.GetFileName();
+
+		std::vector<byte> buf;
+		FCFileEx::Read (strPathName, buf) ;
+
+		HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
+		h.m_url = URL ;
+		h.AddMultipartFormData("tag", "SEND_MSG");
+		h.AddMultipartFormData("sender", sender);
+		h.AddMultipartFormData("receiver", receiver);
+		h.AddMultipartFormData("message", message);
+		//h.AddMultipartFormData("is_binary", "false");
+		h.AddMultipartFormData("is_binary", "true"); // TODO
+		h.AddMultipartFormData("datums", &buf[0], buf.size(), (CStringA)strfilename) ;
+		h.EndMultipartFormData();
+		this->AddRequest(h);
+	}
+}
+
 void CChatDlg::RequestUpdateMsg(){
 	
 	UpdateData(true);
@@ -623,4 +658,11 @@ void CChatDlg::OnChatpopupSaveas()
 			}
 		}
 	}
+}
+
+
+void CChatDlg::OnBnClickedFile()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	RequestSendFile();
 }

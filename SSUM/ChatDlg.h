@@ -49,6 +49,7 @@ private:
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
 
 	void RequestSendMsg();
+	void RequestSendFile();
 	void RequestUpdateMsg();
 
 protected:
@@ -77,6 +78,7 @@ public:
 	afx_msg void OnChatpopupView();
 	afx_msg void OnChatpopupSave();
 	afx_msg void OnChatpopupSaveas();
+	afx_msg void OnBnClickedFile();
 };
 
 
