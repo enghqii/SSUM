@@ -100,12 +100,11 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 					// TODO : decode binaries;
 					std::string datums = doc["talk"][i]["datums"].GetString();
+					std::string file_name = doc["talk"][i]["file_name"].GetString();
 					std::string decoded = base64_decode(datums);
 					decoded.c_str();
 					Sleep(0);
 				}
-
-				Sleep(0);
 			}
 
 			// remove this block
@@ -137,11 +136,8 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 	}
 }
 
-// CChatDlg 메시지 처리기입니다.
+void CChatDlg::RequestSendMsg(){
 
-// send_msg
-void CChatDlg::OnBnClickedButton1()
-{
 	UpdateData(true);
 	CStringA id(CUserInfo::shared_info()->getID());
 	CStringA sender(CUserInfo::shared_info()->getID());
@@ -149,8 +145,8 @@ void CChatDlg::OnBnClickedButton1()
 	CStringA message(m_message);
 	UpdateData(false);
 
-	std::vector<byte> buf;
-	FCFileEx::Read (_T("c:\\asdf.jpg"), buf) ;
+	//std::vector<byte> buf;
+	//FCFileEx::Read (_T("c:\\asdf.jpg"), buf) ;
 	
 	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = URL ;
@@ -158,15 +154,14 @@ void CChatDlg::OnBnClickedButton1()
 	h.AddMultipartFormData("sender", sender);
 	h.AddMultipartFormData("receiver", receiver);
 	h.AddMultipartFormData("message", message);
-	h.AddMultipartFormData("is_binary", "true"); // TODO
-	h.AddMultipartFormData("datums", &buf[0], buf.size(), "asdf.jpg") ;
+	h.AddMultipartFormData("is_binary", "false");
+	//h.AddMultipartFormData("is_binary", "true"); // TODO
+	//h.AddMultipartFormData("datums", &buf[0], buf.size(), "asdf.jpg") ;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }
-
-/// dummy button
-void CChatDlg::OnBnClickedButton2()
-{
+void CChatDlg::RequestUpdateMsg(){
+	
 	UpdateData(true);
 	CStringA id(CUserInfo::shared_info()->getID());
 	CStringA sender(CUserInfo::shared_info()->getID());
@@ -182,4 +177,18 @@ void CChatDlg::OnBnClickedButton2()
 	h.AddMultipartFormData("lastTime", "2013-01-01 00:00:00"); // TODO update this value;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
+}
+
+// CChatDlg 메시지 처리기입니다.
+
+// send_msg
+void CChatDlg::OnBnClickedButton1()
+{
+	RequestSendMsg();
+}
+
+/// dummy button
+void CChatDlg::OnBnClickedButton2()
+{
+	RequestUpdateMsg();
 }
