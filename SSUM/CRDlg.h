@@ -27,6 +27,7 @@ private :
 
 	int nFriends;
 	std::string * pstrFriends;
+	std::string * pstrFriendsID;
 
 	virtual void OnAfterRequestSend(FCHttpRequest& rTask);
     virtual void OnAfterRequestFinish (FCHttpRequest& rTask);
@@ -42,6 +43,9 @@ public:
 //	afx_msg void On32772();
 	afx_msg void On32772();
 	afx_msg void OnBnClickedUpdateList();
+	afx_msg void OnBnClickedChat1();
+	afx_msg void OnBnClickedChat2();
+	afx_msg void OnBnClickedChat3();
 };
 
 

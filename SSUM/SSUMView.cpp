@@ -163,9 +163,8 @@ IMPLEMENT_DYNCREATE(CSSUMView, CFormView)
 			}
 
 		}else{
-			AfxMessageBox(L"received wrong data. check net status.");
+			AfxMessageBox(L"received wrong data.");
 			// parse failed
-			//Sleep(100);
 		}
 	}
 	// HTTP REQUEST RESPONSE FUNCTIONS -- end

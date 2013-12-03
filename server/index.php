@@ -76,26 +76,80 @@
 			//CLog::write(array('GETFRIENDLIST'),"test.txt");
 
 			$id = $_POST['id'];
-			$query = "SELECT name FROM member WHERE id != '{$id}';";
+			$query = "SELECT id, name FROM member WHERE id != '{$id}';";
 			$res = mysqli_query($conn,$query);
 
 			$friend_list = array();
+			$friendID_list = array();
 			$i = 0;
 
 			while($row = mysqli_fetch_array($res)){
 				//echo("i is {$i} and {$row['name']}");
 				$friend_list[$i] = $row['name'];
+				$friendID_list[$i] = $row['id'];
 				$i++;
 			}
 
-			$response = array("tag" => "GET_FRIEND_LIST", "numberOfFriends" => $i, "friends"=> $friend_list);
+			$response = array("tag" => "GET_FRIEND_LIST", "numberOfFriends" => $i, "friends"=> $friend_list, "friendsID" => $friendID_list);
 			echo json_encode($response);
 
 		}else if($tag == 'SEND_MSG'){
 			//CLog::write(array('send msg'),"test.txt");
+			$sender = $_POST['sender'];
+			$receiver = $_POST['receiver'];
+			$message = $_POST['message'];
+			$is_binary = true;
+			$file_name = NULL;
+			$datums = NULL;
+
+			$query = "";
+
+			if($is_binary == "true" && isset($_FILES['datums']) == true){
+
+				$file_name = $_FILES['datums']['name'];
+				$datums = mysql_real_escape_string(file_get_contents($_FILES['datums']['tmp_name']));
+
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary, file_name, datums) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}', '{$file_name}','{$datums}');";
+			
+			}else{
+
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}');";
+			}
+
+			$res = mysqli_query($conn,$query);
+
+			if($res == true ){
+				$response = array("tag" => "SEND_MSG", "success" => 1);
+			}else{
+				$response = array("tag" => "SEND_MSG", "success" => 0, "error_msg" => "query failed");
+			}
+			echo json_encode($response);
 
 		}else if($tag == 'UPDATE_MSG'){
 			//CLog::write(array('update msg'),"test.txt");
+
+			$sender = $_POST['sender'];
+			$receiver = $_POST['receiver'];
+			$lastTime = $_POST['lastTime'];
+
+			$query = "SELECT * FROM messages WHERE ( ( sender = '{$sender}' OR sender = '{$receiver}' ) AND ( receiver = '{$sender}' OR receiver = '{$receiver}' ) ) AND time > '{$lastTime}'";
+			$res = mysqli_query($conn,$query);
+
+			$msg_list = array();
+			$i = 0;
+
+			while($row = mysqli_fetch_array($res)){
+				$msg_list[$i] = $row;
+				$msg_list[$i][6] = base64_encode($msg_list[$i][6]);
+				$msg_list[$i]['datums'] = base64_encode($msg_list[$i]['datums']);
+				$i++;
+			}
+
+			$response = array("tag" => "UPDATE_MSG","lastTime" => date("Y-m-d H:i:s"), "numberOfTalk" => $i, "talk"=> $msg_list);
+
+			//print_r($msg_list);
+
+			echo json_encode($response);
 
 		}else{
 			//CLog::write(array('super else'),"test.txt");
