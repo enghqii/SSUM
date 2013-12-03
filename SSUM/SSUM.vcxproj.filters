@@ -129,16 +129,16 @@
     <ClInclude Include="file.h">
       <Filter>file</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\ImageBubble.h">
+    <ClInclude Include="BinaryBubble.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\Bubble.h">
+    <ClInclude Include="Bubble.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\StringBubble.h">
+    <ClInclude Include="ImageBubble.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\BinaryBubble.h">
+    <ClInclude Include="StringBubble.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,16 +179,16 @@
     <ClCompile Include="base64.cpp">
       <Filter>base64</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\BinaryBubble.cpp">
+    <ClCompile Include="ImageBubble.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\Bubble.cpp">
+    <ClCompile Include="StringBubble.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\ImageBubble.cpp">
+    <ClCompile Include="BinaryBubble.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Visual Studio 2010\Projects\CBubbleTest\CBubbleTest\StringBubble.cpp">
+    <ClCompile Include="Bubble.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
