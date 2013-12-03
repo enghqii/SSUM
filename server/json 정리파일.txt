@@ -53,8 +53,8 @@
 	"sender" : <>,
 	"receiver" : <>,
 	"message" : "asdfasdfadsfsdf",
-	"is_binary" : false,
-	"binary" : adfsdfs
+	"is_binary" : "true/false",
+	"datums" : adfsdfs
 }
 
 4.1 메세지보내기 요청
@@ -76,5 +76,5 @@
 {
 	"tag": "UPDATE_MSG,
 	"numberOfTalk" : <n>,
-	"talk": ["name1","name2","name3"]
+	"talk": [{talk1},{talk2},{talk3}]
 }

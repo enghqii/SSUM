@@ -2,10 +2,14 @@
 //
 
 #include "stdafx.h"
+#include <vector>
 #include "SSUM.h"
 #include "ChatDlg.h"
 #include "UserInfo.h"
+
 #include "../rapidjson/document.h"
+#include "file.h"
+#include "base64.h"
 
 const char URL[] = "http://125.209.197.196/index.php";
 
@@ -91,6 +95,16 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 				pchatData[i].receiver = doc["talk"][i]["receiver"].GetString();
 				pchatData[i].message = doc["talk"][i]["message"].GetString();
 				pchatData[i].is_binary = (doc["talk"][i]["is_binary"].GetString()[0] == '0' ? 0 : 1);
+
+				if(pchatData[i].is_binary == true){
+
+					// TODO : decode binaries;
+					std::string datums = doc["talk"][i]["datums"].GetString();
+					std::string decoded = base64_decode(datums);
+					decoded.c_str();
+					Sleep(0);
+				}
+
 				Sleep(0);
 			}
 
@@ -118,6 +132,7 @@ void CChatDlg::OnAfterRequestFinish (FCHttpRequest& rTask)
 
 				SetDlgItemText(IDC_DUMMYSTATIC,CString(cummulativList.c_str()));
 			}
+			// remove this block
 		}
 	}
 }
@@ -133,6 +148,9 @@ void CChatDlg::OnBnClickedButton1()
 	CStringA receiver(CUserInfo::shared_info()->getTargetID());
 	CStringA message(m_message);
 	UpdateData(false);
+
+	std::vector<byte> buf;
+	FCFileEx::Read (_T("c:\\asdf.jpg"), buf) ;
 	
 	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = URL ;
@@ -140,8 +158,8 @@ void CChatDlg::OnBnClickedButton1()
 	h.AddMultipartFormData("sender", sender);
 	h.AddMultipartFormData("receiver", receiver);
 	h.AddMultipartFormData("message", message);
-	h.AddMultipartFormData("is_binary", false);
-	h.AddMultipartFormData("binary", NULL);
+	h.AddMultipartFormData("is_binary", "true"); // TODO
+	h.AddMultipartFormData("datums", &buf[0], buf.size(), "asdf.jpg") ;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }
@@ -149,8 +167,6 @@ void CChatDlg::OnBnClickedButton1()
 /// dummy button
 void CChatDlg::OnBnClickedButton2()
 {
-	//SetDlgItemText(IDC_DUMMYSTATIC,CUserInfo::shared_info()->getTargetID());
-
 	UpdateData(true);
 	CStringA id(CUserInfo::shared_info()->getID());
 	CStringA sender(CUserInfo::shared_info()->getID());
@@ -163,7 +179,7 @@ void CChatDlg::OnBnClickedButton2()
 	h.AddMultipartFormData("tag", "UPDATE_MSG");
 	h.AddMultipartFormData("sender", sender);
 	h.AddMultipartFormData("receiver", receiver);
-	h.AddMultipartFormData("lastTime", "2013-01-01 00:00:00");
+	h.AddMultipartFormData("lastTime", "2013-01-01 00:00:00"); // TODO update this value;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }

@@ -98,13 +98,28 @@
 			$sender = $_POST['sender'];
 			$receiver = $_POST['receiver'];
 			$message = $_POST['message'];
-			$is_binary = false;
+			$is_binary = true;
+			$file_name = NULL;
+			$datums = NULL;
 
-			$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}');";
+			//if($is_binary == "true")
+			//	$is_bin = true;
+			$query = "";
+
+			if($is_binary == "true" && isset($_FILES['datums']) == true){
+				$file_name = $_FILES['datums']['name'];
+				$datums = mysql_real_escape_string(file_get_contents($_FILES['datums']['tmp_name']));
+
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary, file_name, datums) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}', '{$file_name}','{$datums}');";
+			
+			}else{
+
+				$query = "INSERT INTO messages (sender, receiver, message, is_binary) VALUES ('{$sender}', '{$receiver}', '{$message}', '{$is_binary}');";
+			}
 
 			$res = mysqli_query($conn,$query);
 
-			if($res == true){
+			if($res == true ){
 				$response = array("tag" => "SEND_MSG", "success" => 1);
 			}else{
 				$response = array("tag" => "SEND_MSG", "success" => 0, "error_msg" => "query failed");
@@ -126,9 +141,15 @@
 
 			while($row = mysqli_fetch_array($res)){
 				$msg_list[$i] = $row;
+				$msg_list[$i][5] = base64_encode($msg_list[$i][5]);
+				$msg_list[$i]['datums'] = base64_encode($msg_list[$i]['datums']);
 				$i++;
 			}
+
 			$response = array("tag" => "UPDATE_MSG", "numberOfTalk" => $i, "talk"=> $msg_list);
+
+			//print_r($msg_list);
+
 			echo json_encode($response);
 
 		}else{
