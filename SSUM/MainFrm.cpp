@@ -369,9 +369,9 @@ void CMainFrame::Set_View(UINT ViewID)
 void CMainFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	lpMMI->ptMaxTrackSize.x = 925-604+7;
-	lpMMI->ptMinTrackSize.x = 925-604+7;
-	lpMMI->ptMaxTrackSize.y = 615-173+50;
-	lpMMI->ptMinTrackSize.y = 615-173+50;
+	//lpMMI->ptMaxTrackSize.x = 925-604+7;
+	//lpMMI->ptMinTrackSize.x = 925-604+7;
+	//lpMMI->ptMaxTrackSize.y = 615-173+50;
+	//lpMMI->ptMinTrackSize.y = 615-173+50;
 	CFrameWndEx::OnGetMinMaxInfo(lpMMI);
 }
