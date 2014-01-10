@@ -333,7 +333,6 @@ void CChatDlg::OnBnClickedButton2()
 }
 
 
-<<<<<<< HEAD
 void CChatDlg::OnInitialUpdate()
 {
 	__super::OnInitialUpdate();
@@ -359,21 +358,13 @@ void CChatDlg::OnInitialUpdate()
 }
 
 
-=======
->>>>>>> gettingFriendList
 void CChatDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	RequestUpdateMsg();
-<<<<<<< HEAD
-=======
-
->>>>>>> gettingFriendList
 	__super::OnTimer(nIDEvent);
 }
 
-
-<<<<<<< HEAD
 void CChatDlg::OnMenuFrientlist()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -730,12 +721,4 @@ void CChatDlg::OnDestroy()
 		 cur->deletetempfile();		
 	}
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-=======
-void CChatDlg::OnInitialUpdate()
-{
-	__super::OnInitialUpdate();
-
-	SetTimer(0,1000,NULL);
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
->>>>>>> gettingFriendList
 }

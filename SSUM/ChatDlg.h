@@ -83,7 +83,6 @@ public:
 	int tnum;
 	afx_msg void OnDestroy();
 
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//virtual void OnInitialUpdate();
 };
 
