@@ -63,7 +63,7 @@ BEGIN_MESSAGE_MAP(CChatDlg, CFormView)
 	ON_COMMAND(ID_CHATPOPUP_SAVE, &CChatDlg::OnChatpopupSave)
 	ON_COMMAND(ID_CHATPOPUP_SAVEAS, &CChatDlg::OnChatpopupSaveas)
 	ON_BN_CLICKED(IDC_FILE, &CChatDlg::OnBnClickedFile)
-ON_WM_DESTROY()
+	ON_WM_DESTROY()	
 END_MESSAGE_MAP()
 
 
@@ -249,8 +249,8 @@ void CChatDlg::RequestSendMsg(){
 	m_message = L"";
 	UpdateData(false);
 
-	//std::vector<byte> buf;
-	//FCFileEx::Read (_T("c:\\asdf.jpg"), buf) ;
+	std::vector<byte> buf;
+	FCFileEx::Read (_T("hjkl.jpg"), buf) ;
 	
 	HTTP_REQUEST_HEADER h (HTTP_REQUEST_HEADER::VERB_TYPE_POST_MULTIPART);
 	h.m_url = URL ;
@@ -260,7 +260,7 @@ void CChatDlg::RequestSendMsg(){
 	h.AddMultipartFormData("message", message);
 	h.AddMultipartFormData("is_binary", "false");
 	//h.AddMultipartFormData("is_binary", "true"); // TODO
-	//h.AddMultipartFormData("datums", &buf[0], buf.size(), "asdf.jpg") ;
+	//h.AddMultipartFormData("datums", &buf[0], buf.size(), "hjkl.jpg") ;
 	h.EndMultipartFormData();
 	this->AddRequest(h);
 }
@@ -333,6 +333,7 @@ void CChatDlg::OnBnClickedButton2()
 }
 
 
+<<<<<<< HEAD
 void CChatDlg::OnInitialUpdate()
 {
 	__super::OnInitialUpdate();
@@ -358,14 +359,21 @@ void CChatDlg::OnInitialUpdate()
 }
 
 
+=======
+>>>>>>> gettingFriendList
 void CChatDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	RequestUpdateMsg();
+<<<<<<< HEAD
+=======
+
+>>>>>>> gettingFriendList
 	__super::OnTimer(nIDEvent);
 }
 
 
+<<<<<<< HEAD
 void CChatDlg::OnMenuFrientlist()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -722,4 +730,12 @@ void CChatDlg::OnDestroy()
 		 cur->deletetempfile();		
 	}
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+=======
+void CChatDlg::OnInitialUpdate()
+{
+	__super::OnInitialUpdate();
+
+	SetTimer(0,1000,NULL);
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+>>>>>>> gettingFriendList
 }

@@ -60,6 +60,7 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton1();
 	CString m_message;
+
 	virtual void OnInitialUpdate();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnMenuFrientlist();
@@ -81,6 +82,9 @@ public:
 	afx_msg void OnBnClickedFile();
 	int tnum;
 	afx_msg void OnDestroy();
+
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	//virtual void OnInitialUpdate();
 };
 
 
